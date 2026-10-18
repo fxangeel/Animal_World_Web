@@ -1,0 +1,8 @@
+{
+  "name": "huellitas-aragua-demo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Demo visual e interactiva de un catálogo de mascotas y servicios en Aragua.",
+  "scripts": {"dev": "node server.mjs", "start": "node server.mjs", "assets": "node scripts/generate-assets.mjs", "check": "node --check dist/app.js && node --check server.mjs"},
+  "engines": {"node": ">=20"}
+}

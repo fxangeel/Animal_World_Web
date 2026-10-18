@@ -1,0 +1,13 @@
+node_modules/
+.env
+.env.*
+.dev.vars
+.wrangler/
+*.log
+.DS_Store
+Thumbs.db
+work/
+# Documentación comercial y notas internas del cliente (solo local).
+/docs/BRIEF.md
+/docs/PROPUESTA.md
+/docs/PUBLICACION.md
