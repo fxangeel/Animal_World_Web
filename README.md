@@ -2,6 +2,24 @@
 
 Marca provisional para presentar una tienda de productos y servicios de mascotas en Aragua, Venezuela. Proyecto estático, sin dependencias de instalación, preparado para GitHub y Cloudflare Pages.
 
+## Demo publicada
+
+- Web de presentación: https://fxangeel.github.io/huellitas-aragua-demo/
+- Repositorio: https://github.com/fxangeel/huellitas-aragua-demo
+- Código fuente en `main`. GitHub Pages publica el contenido de `dist/` desde la rama `gh-pages`.
+- La demo es pública y no procesa compras reales. La propuesta comercial y el brief del cliente permanecen en la carpeta local y están excluidos por `.gitignore`.
+
+Después de editar y revisar los cambios, actualizar desde la carpeta del proyecto:
+
+```powershell
+git add .
+git commit -m "Actualizar demo"
+git push origin main
+git subtree push --prefix dist origin gh-pages
+```
+
+Esperar a que termine la publicación de Pages antes de compartir los cambios. No editar la rama generada `gh-pages` directamente.
+
 ## Vista local
 
 Desde esta carpeta ejecuta `npm run dev` y abre http://127.0.0.1:4173. También se puede abrir `dist/index.html` directamente, aunque se recomienda el servidor local para mantener un origen consistente de almacenamiento.

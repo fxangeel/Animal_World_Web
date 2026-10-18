@@ -14,4 +14,4 @@
 - Filtro táctil probado: seleccionar Gatos muestra 4 productos de ejemplo. Los datos ficticios de prueba se restablecieron después.
 - Vista de escritorio restaurada a su tamaño normal: la barra inferior móvil se oculta y no hay desbordamiento horizontal.
 - Estas pruebas usan tamaños de pantalla en el navegador. Queda pendiente revisar en teléfonos físicos Android y iPhone, incluyendo teclado, áreas seguras y comportamiento de Safari. No se afirma compatibilidad verificada en esos dispositivos.
-- Publicación remota pendiente. No hay una URL pública verificada en esta entrega.
+- El código está subido a `fxangeel/huellitas-aragua-demo`; el estado y enlace de la publicación se indican en el README del proyecto.
