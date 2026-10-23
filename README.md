@@ -1,4 +1,4 @@
-# Huellitas Aragua · Demo
+# Animal World · Demo
 
 Marca provisional para presentar una tienda de productos y servicios de mascotas en Aragua, Venezuela. Proyecto estático, sin dependencias de instalación, preparado para GitHub y Cloudflare Pages.
 
