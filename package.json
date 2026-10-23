@@ -1,8 +1,21 @@
 {
   "name": "huellitas-aragua-demo",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
-  "description": "Demo visual e interactiva de un catálogo de mascotas y servicios en Aragua.",
-  "scripts": {"dev": "node server.mjs", "start": "node server.mjs", "assets": "node scripts/generate-assets.mjs", "check": "node --check dist/app.js && node --check server.mjs"},
-  "engines": {"node": ">=20"}
+  "type": "module",
+  "description": "Animal World: catálogo multivendedor de productos y servicios para mascotas en Aragua.",
+  "scripts": {
+    "data": "node scripts/make-catalog.mjs && node scripts/make-gallery.mjs",
+    "dev": "wrangler pages dev dist --port 4173",
+    "start": "wrangler pages dev dist --port 4173",
+    "static": "node server.mjs",
+    "db:local": "wrangler d1 execute animal-world --local --file=db/schema.sql && wrangler d1 execute animal-world --local --file=db/seed.sql",
+    "db:create": "wrangler d1 create animal-world",
+    "db:remote": "wrangler d1 execute animal-world --remote --file=db/schema.sql && wrangler d1 execute animal-world --remote --file=db/seed.sql",
+    "admin": "node scripts/make-admin.mjs",
+    "assets": "node scripts/generate-assets.mjs",
+    "check": "node scripts/check.mjs"
+  },
+  "engines": {"node": ">=20"},
+  "devDependencies": {"wrangler": "^4.0.0"}
 }

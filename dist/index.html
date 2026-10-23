@@ -1,28 +1,51 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#254d3d"><meta name="description" content="Animal World: demo de una tienda de productos y servicios para todas las mascotas en Aragua.">
-  <title>Animal World · Todo para su pequeño mundo</title>
-  <link rel="icon" href="assets/paw.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="mobile.css"><script src="app.js" defer></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#254d3d">
+  <title>Animal World · Todo para tu mascota en Aragua</title>
+  <meta name="description" content="Productos y servicios para perros, gatos, aves, peces y más de comercios locales de Aragua. Haz tu pedido por WhatsApp.">
+  <meta name="robots" content="index,follow">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_VE">
+  <meta property="og:site_name" content="Animal World">
+  <meta property="og:title" content="Animal World · Todo para tu mascota en Aragua">
+  <meta property="og:description" content="Productos y servicios para perros, gatos, aves, peces y más de comercios locales de Aragua. Haz tu pedido por WhatsApp.">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="assets/paw.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="mobile.css">
+  <link rel="preload" as="image" href="assets/hero-dog.jpg" fetchpriority="high">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Animal World","description":"Catálogo de productos y servicios para mascotas de comercios locales de Aragua, Venezuela.","areaServed":{"@type":"AdministrativeArea","name":"Aragua, Venezuela"},"logo":"assets/paw.svg"}</script>
+  <script type="module" src="js/app.js"></script>
 </head>
 <body>
 <a class="skip" href="#main">Saltar al contenido</a>
-<div class="announcement"><span>Hecho con cariño para las mascotas de Aragua</span><span class="demo-pill">DEMO INTERACTIVA · SIN COMPRAS REALES</span></div>
+<div class="announcement"><span>Hecho con cariño para las mascotas de Aragua</span><span class="announce-right">Pedidos por WhatsApp · Entrega local</span></div>
 <header>
   <div class="header-main wrap">
     <a href="#inicio" class="brand" aria-label="Animal World, inicio"><img src="assets/paw.svg" alt="" width="42" height="42"><span>animal<small>WORLD</small></span></a>
-    <form id="search-form" role="search"><label class="sr-only" for="search">Buscar productos</label><input id="search" type="search" placeholder="¿Qué necesita tu mejor amigo?" autocomplete="off"><button aria-label="Buscar" class="search-button" type="submit" data-icon="search"></button></form>
-    <button class="location" data-action="location"><span data-icon="pin"></span><span>Estás en<small id="current-location">Maracay, Aragua</small></span><span>⌄</span></button>
-    <div class="header-actions"><a href="#favoritos" aria-label="Mis favoritos" data-icon="heart"></a><a href="#cuenta" aria-label="Mi cuenta" data-icon="user"></a><button class="cart-button" data-action="cart" aria-label="Abrir carrito"><span data-icon="bag"></span><b id="cart-count">0</b></button></div>
+    <form id="search-form" role="search"><label class="sr-only" for="search">Buscar productos</label><input id="search" type="search" placeholder="¿Qué necesita tu mejor amigo?" autocomplete="off" enterkeyhint="search"><button aria-label="Buscar" class="search-button" type="submit" data-icon="search"></button></form>
+    <button class="location" data-action="location"><span data-icon="pin"></span><span class="location-text">Tu zona<small id="current-location">Maracay, Aragua</small></span></button>
+    <div class="header-actions"><a href="#favoritos" class="hide-mobile" aria-label="Mis favoritos" data-icon="heart"></a><a href="#cuenta" id="account-link" aria-label="Iniciar sesión o crear cuenta" data-icon="user"></a><button class="cart-button" data-action="cart" aria-label="Abrir carrito"><span data-icon="bag"></span><b id="cart-count">0</b></button></div>
   </div>
-  <nav class="wrap nav" aria-label="Principal"><a href="#catalogo" class="nav-shop"><span data-icon="grid"></span> Todos los productos</a><a href="#catalogo?pet=Perros">Perros</a><a href="#catalogo?pet=Gatos">Gatos</a><a href="#catalogo?pet=Aves">Aves</a><a href="#catalogo?pet=Peces">Peces</a><a href="#catalogo?pet=Pequeños">Pequeñas mascotas</a><a href="#servicios">Servicios <span class="tiny">♥</span></a><a class="affiliate-nav" href="#afiliate">Afíliate a Animal World <span>↗</span></a></nav>
+  <nav class="wrap nav" aria-label="Principal"><a href="#catalogo" class="nav-shop"><span data-icon="grid"></span> Todos los productos</a><a href="#catalogo?pet=Perros">Perros</a><a href="#catalogo?pet=Gatos">Gatos</a><a href="#catalogo?pet=Aves">Aves</a><a href="#catalogo?pet=Peces">Peces</a><a href="#catalogo?pet=Pequeños">Pequeñas mascotas</a><a href="#servicios">Servicios</a><a href="#como-funciona">Cómo funciona</a><a class="affiliate-nav" href="#afiliate">Vende con nosotros <span aria-hidden="true">↗</span></a></nav>
 </header>
 <main id="main" tabindex="-1"></main>
-<footer><div class="wrap footer-grid"><div><a href="#inicio" class="brand"><img src="assets/paw.svg" alt="" width="38" height="38"><span>animal<small>WORLD</small></span></a><p>Su pequeño mundo.<br>Todo nuestro cariño.</p><span class="footer-location">Maracay · Aragua · Venezuela</span></div><div><h3>Explora</h3><a href="#catalogo">Productos</a><a href="#servicios">Servicios para mascotas</a><a href="#nosotros">Nuestra historia</a><a href="#afiliate">Quiero afiliar mi negocio</a></div><div><h3>Estamos para ayudarte</h3><a href="#ayuda">Preguntas frecuentes</a><a href="#envios">Envíos y retiros</a><a href="#devoluciones">Cambios y devoluciones</a><a href="#contacto">Contáctanos</a></div><div><h3>Sigamos conectados</h3><a href="#contacto">WhatsApp ↗</a><a href="#contacto">Instagram ↗</a><a href="#contacto">Correo y teléfono ↗</a><a href="#panel">Panel de afiliado</a><a href="#admin">Administración · Demo</a></div></div><div class="wrap footer-bottom"><span>© 2026 Animal World. Marca y contenido provisionales.</span><span>Débito · Crédito · Pago Móvil · Binance</span></div></footer>
-<nav class="mobile-nav" aria-label="Navegación móvil"><a href="#inicio"><span data-icon="home"></span><span>Inicio</span></a><a href="#catalogo"><span data-icon="grid"></span><span>Catálogo</span></a><a href="#servicios"><span data-icon="heart"></span><span>Servicios</span></a><a href="#favoritos"><span data-icon="heart"></span><span>Favoritos</span></a><button data-action="cart" aria-label="Abrir carrito móvil"><span class="mobile-bag"><span data-icon="bag"></span><b id="mobile-cart-count">0</b></span><span>Carrito</span></button></nav>
-<button class="chat-button" data-action="chat" aria-label="Abrir ayuda por chat"><span data-icon="chat"></span><span>¿Te ayudamos?</span></button>
-<dialog id="modal"><button class="modal-close" aria-label="Cerrar ventana" data-action="close">×</button><div id="modal-body"></div></dialog>
+<footer><div class="wrap footer-grid">
+  <div><a href="#inicio" class="brand"><img src="assets/paw.svg" alt="" width="38" height="38"><span>animal<small>WORLD</small></span></a><p>Su pequeño mundo.<br>Todo nuestro cariño.</p><span class="footer-location">Maracay · Aragua · Venezuela</span></div>
+  <div><h2>Explora</h2><a href="#catalogo">Productos</a><a href="#servicios">Servicios para mascotas</a><a href="#como-funciona">Cómo funciona</a><a href="#nosotros">Nuestra historia</a></div>
+  <div><h2>Estamos para ayudarte</h2><a href="#ayuda">Preguntas frecuentes</a><a href="#envios">Envíos y retiros</a><a href="#devoluciones">Cambios y devoluciones</a><a href="#contacto">Contáctanos</a></div>
+  <div><h2>Para comercios</h2><a href="#afiliate">Quiero afiliar mi negocio</a><a href="#cuenta">Acceso de tiendas y clientes</a></div>
+</div><div class="wrap footer-bottom"><span>© 2026 Animal World</span><span>Pago Móvil · Binance · Tarjeta (a coordinar)</span></div></footer>
+<nav class="mobile-nav" aria-label="Navegación móvil"><a href="#inicio"><span data-icon="home"></span><span>Inicio</span></a><a href="#catalogo"><span data-icon="grid"></span><span>Catálogo</span></a><a href="#servicios"><span data-icon="heart"></span><span>Servicios</span></a><a href="#favoritos"><span data-icon="heart"></span><span>Favoritos</span></a><button data-action="cart" aria-label="Abrir carrito"><span class="mobile-bag"><span data-icon="bag"></span><b id="mobile-cart-count">0</b></span><span>Carrito</span></button></nav>
+<a class="wa-float" id="wa-float" href="https://wa.me/" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp"><span data-icon="chat"></span><span>¿Te ayudamos?</span></a>
+<dialog id="modal" aria-label="Ventana"><button class="modal-close" aria-label="Cerrar ventana" data-action="close" data-icon="x"></button><div id="modal-body"></div></dialog>
 <div id="toast" role="status" aria-live="polite"></div>
+<noscript><p style="padding:24px;text-align:center">Animal World necesita JavaScript para mostrar el catálogo.</p></noscript>
 </body>
 </html>

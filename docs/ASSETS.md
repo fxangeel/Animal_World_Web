@@ -1,7 +1,6 @@
 # Recursos visuales
 
-- `assets/hero-dog.jpg`: fotografía de Unsplash, origen https://images.unsplash.com/photo-1552053831-71594a27632d . Descargada para uso en esta demo.
-- `assets/cat.jpg`: fotografía de Unsplash, origen https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba . Descargada para uso en esta demo.
-- Los SVG de productos y la huella son ilustraciones originales creadas para este borrador; no representan empaques reales de las marcas mencionadas.
-- DM Sans y Manrope se cargan de Google Fonts con alternativas de sistema. Las fotografías y las ilustraciones están en el proyecto y no necesitan conexión externa para mostrarse.
-- Marcas comerciales, nombres, opiniones y precios son ejemplos de contenido, sin afirmar relación comercial ni ventas verificadas.
+- `assets/hero-dog.jpg` y `assets/cat.jpg`: fotografías de Unsplash (licencia de Unsplash), orígenes https://images.unsplash.com/photo-1552053831-71594a27632d y https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba . `hero-dog.jpg` está redimensionada a 720 px de ancho para que cargue rápido.
+- Los SVG de productos, la huella y la galería (`assets/gallery/`, generada con `npm run data`) son ilustraciones originales; no representan empaques reales. Son marcadores hasta que cada tienda aporte sus fotos.
+- DM Sans y Manrope se cargan de Google Fonts con alternativas de sistema.
+- Marcas, tiendas y testimonios del catálogo actual son inventados y provisionales.

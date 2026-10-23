@@ -1,0 +1,13 @@
+name = "animal-world"
+compatibility_date = "2026-01-01"
+pages_build_output_dir = "dist"
+
+[vars]
+# Tarifa de entrega local en centavos de dólar (valor ya vigente en la tienda: 3 $).
+SHIPPING_CENTS = "300"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "animal-world"
+# Sustituir por el id real al crear la base en Cloudflare (npm run db:create). En local no se usa.
+database_id = "00000000-0000-0000-0000-000000000000"

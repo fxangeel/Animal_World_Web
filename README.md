@@ -1,73 +1,73 @@
-# Animal World · Demo
+# Animal World
 
-Marca provisional para presentar una tienda de productos y servicios de mascotas en Aragua, Venezuela. Proyecto estático, sin dependencias de instalación, preparado para GitHub y Cloudflare Pages.
+Catálogo multivendedor de productos y servicios para mascotas en Aragua, Venezuela. Los clientes arman su carrito y envían el pedido por WhatsApp con el mensaje ya armado; las tiendas aliadas gestionan su catálogo y la administración revisa publicaciones, pedidos y solicitudes.
 
-## Demo publicada
+- Sitio estático en `dist/` (HTML, CSS y JavaScript sin paso de compilación).
+- API y cuentas en `functions/` (Cloudflare Pages Functions) con base de datos Cloudflare D1.
+- Repositorio: https://github.com/fxangeel/huellitas-aragua-demo (el nombre del repositorio puede seguir así).
 
-- Web de presentación: https://fxangeel.github.io/huellitas-aragua-demo/
-- Repositorio: https://github.com/fxangeel/huellitas-aragua-demo
-- Código fuente en `main`. GitHub Pages publica el contenido de `dist/` desde la rama `gh-pages`.
-- La demo es pública y no procesa compras reales. La propuesta comercial y el brief del cliente permanecen en la carpeta local y están excluidos por `.gitignore`.
+## Qué hace
 
-Después de editar y revisar los cambios, actualizar desde la carpeta del proyecto:
+- Catálogo con búsqueda en vivo, filtros por mascota, categoría, precio y tienda, y orden por precio o nombre.
+- Fichas con galería de imágenes, descripción corta, tienda vendedora y productos relacionados.
+- Carrito y pedido: se registra en el servidor (código `AW-XXXXXX`, con precios y existencias verificados allí) y se abre WhatsApp con productos, cantidades y total.
+- Cuentas con tres roles: **cliente** (ve sus pedidos), **tienda aliada** (catálogo, existencias y pedidos con sus productos) y **administración** (aprueba productos, gestiona pedidos, afiliaciones, servicios y mensajes).
+- Cómo funciona, testimonios (de ejemplo, marcados), preguntas frecuentes, servicios y Afíliate.
+- SEO por sección (título, descripción, `robots`), imágenes ligeras, etiquetas de accesibilidad y diseño pensado primero para 360–430 px.
+
+Si el servidor no responde (por ejemplo, alojado solo como estático), el catálogo se lee de `data/catalog.json` y el pedido por WhatsApp sigue funcionando sin código de pedido; cuentas y formularios quedan desactivados con un aviso.
+
+## Trabajar en local
 
 ```powershell
-git add .
-git commit -m "Actualizar demo"
-git push origin main
+npm install
+npm run db:local        # crea las tablas y carga el catálogo en la base local
+$env:ADMIN_EMAIL='tu@correo.com'; $env:ADMIN_PASSWORD='una-clave-larga'; npm run admin
+npm run dev             # http://127.0.0.1:4173
+```
+
+También se puede abrir con `INICIAR TIENDA.cmd`. `npm run static` sirve solo `dist/` (sin API). Después de cada cambio: `npm run check`.
+
+## Datos de la tienda (pendientes de completar)
+
+Se editan en `dist/js/config.js`:
+
+| Campo | Estado |
+|---|---|
+| `whatsapp` | **Vacío.** Mientras no haya número, el botón abre WhatsApp para elegir el contacto manualmente. Formato: `584120000000`. |
+| `email`, `instagram` | Vacíos; no se muestran hasta completarlos. |
+| `shipping`, `cities`, `payments` | Valores ya acordados (entrega local 3 $; Maracay, Turmero, Cagua y La Victoria; Pago Móvil, Binance y tarjeta a coordinar). La tarifa también está en `wrangler.toml` (`SHIPPING_CENTS`): cambiar ambos. |
+
+El catálogo actual (12 productos, 4 tiendas) es **provisional e inventado**: no usa nombres, marcas ni logos de negocios reales. La fuente es `scripts/make-catalog.mjs`; `npm run data` regenera `data/catalog.json`, `dist/data/catalog.json`, `db/seed.sql` y las imágenes de galería. Los precios y existencias son los ya acordados; no cambiarlos sin consultar. Los testimonios de ejemplo están en `dist/js/content.js`.
+
+## Publicar
+
+**Sitio completo (recomendado): Cloudflare Pages + D1.** GitHub Pages solo sirve archivos estáticos y no puede ejecutar la API.
+
+1. `npm run db:create` y copiar el `database_id` que devuelve a `wrangler.toml`.
+2. `npm run db:remote` (tablas y catálogo) y `npm run admin -- --remote` con `ADMIN_EMAIL` y `ADMIN_PASSWORD`.
+3. En Cloudflare: Workers & Pages → crear proyecto de Pages desde el repositorio. Framework: ninguno; comando de compilación: vacío; salida: `dist`. En Settings → Bindings, enlazar la base D1 con el nombre `DB` y definir la variable `SHIPPING_CENTS`.
+
+**Vista estática (rama `gh-pages`).** Publica solo `dist/` y funciona en modo sin servidor (catálogo y pedido por WhatsApp):
+
+```powershell
 git subtree push --prefix dist origin gh-pages
 ```
 
-Esperar a que termine la publicación de Pages antes de compartir los cambios. No editar la rama generada `gh-pages` directamente.
+No editar `gh-pages` directamente.
 
-## Vista local
+## Estructura
 
-Desde esta carpeta ejecuta `npm run dev` y abre http://127.0.0.1:4173. También se puede abrir `dist/index.html` directamente, aunque se recomienda el servidor local para mantener un origen consistente de almacenamiento.
+- `dist/index.html`, `dist/styles.css` (base y componentes), `dist/mobile.css` (pantallas pequeñas y táctiles), `dist/js/` (módulos: `app`, `shop`, `content`, `checkout`, `account`, `api`, `store`, `ui`, `config`), `dist/assets/`.
+- `functions/api/[[path]].js` y `functions/_lib/core.js`: API, sesiones (cookie HttpOnly, PBKDF2) y permisos por rol.
+- `db/schema.sql`, `db/seed.sql`: base de datos. `scripts/`: catálogo, galería, administrador y revisión.
 
-## Qué incluye
+## Seguridad y límites conocidos
 
-- Inicio adaptable a móvil, categorías por mascota, catálogo con búsqueda, filtros y ordenación.
-- 12 productos ilustrativos, fichas de detalle, favoritos y carrito con cantidades y control de stock.
-- Checkout simulado con entrega o retiro, Pago Móvil, Binance, débito o crédito. No pide datos bancarios.
-- Perfil local, pedidos de ejemplo, resumen de pedido y seguimiento de estado simulado.
-- Servicios con solicitud de información y fecha preferida.
-- Formulario de afiliación, panel de catálogo y stock, alta de productos y aprobación/rechazo central.
-- Contacto, ayuda, historia, condiciones provisionales de envío y devolución, asistente de respuestas preparadas.
+- Las contraseñas se guardan con PBKDF2-SHA256; las sesiones expiran a los 7 días; el acceso tiene límite de intentos. Los precios y existencias siempre se calculan en el servidor.
+- Aprobar una afiliación crea la cuenta de la tienda con una contraseña temporal que se muestra una sola vez y debe cambiarse al entrar.
+- No hay recuperación de contraseña por correo, avisos por correo ni carga de fotos propia (los productos usan ilustraciones o una dirección `https` de imagen). Son los siguientes pasos naturales (R2 para imágenes, servicio de correo).
+- Las rutas usan `#`, así que los buscadores ven una sola página; el título y la descripción cambian por sección para quien comparte o navega. Para posicionamiento por producto haría falta prerenderizar.
+- Pendiente: revisar en teléfonos físicos Android e iPhone; dominio propio; `sitemap.xml` cuando exista el dominio.
 
-Todo se guarda solo en localStorage del navegador. No hay servidor de cuentas, autenticación, pagos, facturación fiscal, correo, WhatsApp, API de envío ni separación real de permisos. Los formularios no envían información a terceros. No introducir datos personales reales en la demo.
-
-## Recorrido para presentar
-
-1. Explorar el inicio y elegir una mascota.
-2. Buscar un producto, abrir su ficha y guardarlo como favorito.
-3. Añadir productos al carrito y modificar cantidades.
-4. Completar un pedido de ejemplo y verlo en Mi cuenta.
-5. Abrir Administración desde el pie y cambiar el estado del pedido; comprobarlo en Mi cuenta.
-6. Abrir Panel de afiliado, añadir un producto, aprobarlo en Administración y verlo en el catálogo.
-7. Probar una solicitud de servicio y una afiliación; verlas en Administración.
-
-Para empezar de cero: Mi cuenta → Borrar mis datos de demo.
-
-## Publicar en Cloudflare Pages
-
-- Subir esta carpeta a un repositorio nuevo de GitHub.
-- En Cloudflare: Workers & Pages → crear una aplicación de Pages → importar el repositorio.
-- Framework: ninguno. Comando de compilación: vacío. Directorio de salida: `dist`.
-- No configurar secretos ni variables para esta demo.
-- Las rutas usan hash para funcionar sin reglas especiales ni servidor de aplicación.
-- Si se publica por carga directa, cargar únicamente el contenido de `dist`.
-- La URL `pages.dev` de prueba no necesita un dominio propio.
-
-Consulta `docs/ASSETS.md` para los recursos visuales y `docs/REVISION.md` para las comprobaciones realizadas. La documentación comercial del cliente se conserva localmente.
-
-## Edición
-
-- `dist/index.html`: estructura global.
-- `dist/styles.css`: diseño y adaptación a pantallas.
-- `dist/mobile.css`: ajustes para uso táctil, navegación inferior y compra en pantallas pequeñas.
-- `dist/app.js`: catálogo, vistas y simulaciones.
-- `dist/assets`: fotografías e ilustraciones locales.
-- `scripts/generate-assets.mjs`: fuente de las ilustraciones SVG originales. Ejecutar `npm run assets` solo si se desea regenerarlas.
-- `server.mjs`: vista local sin dependencias.
-
-No convertir esta simulación en una tienda real sin incorporar servidor, autenticación, permisos, persistencia, auditoría e integraciones verificadas.
+Recursos visuales: `docs/ASSETS.md`. Registro de revisiones: `docs/REVISION.md`.
