@@ -58,7 +58,7 @@ No editar `gh-pages` directamente.
 
 ## Estructura
 
-- `dist/index.html`, `dist/styles.css` (base y componentes), `dist/mobile.css` (pantallas pequeñas y táctiles), `dist/js/` (módulos: `app`, `shop`, `content`, `checkout`, `account`, `api`, `store`, `ui`, `config`), `dist/assets/`.
+- `dist/index.html`, `dist/styles.css` (base y componentes), `dist/mobile.css` (pantallas pequeñas y táctiles), `dist/theme.css` y `dist/theme-mobile.css` (tema azul: cabecera, hero a pantalla completa, secciones), `dist/js/` (módulos: `app`, `motion` (animaciones de scroll, menú y búsqueda), `shop`, `content`, `checkout`, `account`, `api`, `store`, `ui`, `config`), `dist/assets/`.
 - `functions/api/[[path]].js` y `functions/_lib/core.js`: API, sesiones (cookie HttpOnly, PBKDF2) y permisos por rol.
 - `db/schema.sql`, `db/seed.sql`: base de datos. `scripts/`: catálogo, galería, administrador y revisión.
 

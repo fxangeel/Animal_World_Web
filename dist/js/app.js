@@ -2,11 +2,12 @@
 import {CONFIG, waLink} from './config.js';
 import {api, server, loadCatalog, loadUser} from './api.js';
 import {state, save, productById, cartCount, reconcileCart} from './store.js';
-import {hydrate, icon, debounce, toast, showModal, closeModal, isModalOpen, success} from './ui.js';
+import {hydrate, icon, money, debounce, toast, showModal, closeModal, isModalOpen, success} from './ui.js';
 import {home, catalog, productPage} from './shop.js';
 import {servicePage, howPage, affiliatePage, contactPage, infoPage, services} from './content.js';
 import {addToCart, changeQuantity, removeFromCart, showCart, showCheckout, updateDeliveryFields, submitOrder} from './checkout.js';
 import * as acc from './account.js';
+import {refreshMotion} from './motion.js';
 
 const main = document.querySelector('#main');
 const searchInput = document.querySelector('#search');
@@ -82,6 +83,7 @@ function render() {
   }
   after?.();
   wireFilterToggle();
+  refreshMotion(path);
 }
 
 function wireFilterToggle() {
@@ -129,6 +131,21 @@ const actions = {
     b.setAttribute('aria-expanded', String(open));
     b.querySelector('span').textContent = open ? 'Ocultar filtros' : 'Filtrar productos';
   },
+  'hero-product'(b) {
+    const box = b.closest('.hero-product');
+    const ids = box.dataset.ids.split(',');
+    const i = (Number(box.dataset.i) + Number(b.dataset.dir) + ids.length) % ids.length;
+    const p = productById(ids[i]);
+    if (!p) return;
+    box.dataset.i = i;
+    box.classList.remove('swap'); void box.offsetWidth; box.classList.add('swap');
+    box.querySelector('.hp-visual img').src = p.images[0];
+    const name = box.querySelector('.hp-name');
+    name.textContent = p.name;
+    name.href = `#producto?id=${p.id}`;
+    box.querySelector('.hp-price').textContent = money(p.price);
+  },
+  'scroll-next'() { window.scrollTo({top: innerHeight - 8, behavior: 'smooth'}); },
   close: closeModal,
   cart: showCart,
   add: (b) => addToCart(b.dataset.id),

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#254d3d">
+  <meta name="theme-color" content="#2f63e8">
   <title>Animal World · Todo para tu mascota en Aragua</title>
   <meta name="description" content="Productos y servicios para perros, gatos, aves, peces y más de comercios locales de Aragua. Haz tu pedido por WhatsApp.">
   <meta name="robots" content="index,follow">
@@ -16,28 +16,35 @@
   <link rel="icon" href="assets/paw.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&family=Fredoka:wght@600;700&display=swap">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="mobile.css">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="theme-mobile.css">
   <link rel="preload" as="image" href="assets/hero-dog.jpg" fetchpriority="high">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Animal World","description":"Catálogo de productos y servicios para mascotas de comercios locales de Aragua, Venezuela.","areaServed":{"@type":"AdministrativeArea","name":"Aragua, Venezuela"},"logo":"assets/paw.svg"}</script>
   <script type="module" src="js/app.js"></script>
 </head>
 <body>
 <a class="skip" href="#main">Saltar al contenido</a>
-<div class="announcement"><span>Hecho con cariño para las mascotas de Aragua</span><span class="announce-right">Pedidos por WhatsApp · Entrega local</span></div>
-<header>
-  <div class="header-main wrap">
+<header id="site-header">
+  <div class="bar">
     <a href="#inicio" class="brand" aria-label="Animal World, inicio"><img src="assets/paw.svg" alt="" width="42" height="42"><span>animal<small>WORLD</small></span></a>
-    <form id="search-form" role="search"><label class="sr-only" for="search">Buscar productos</label><input id="search" type="search" placeholder="¿Qué necesita tu mejor amigo?" autocomplete="off" enterkeyhint="search"><button aria-label="Buscar" class="search-button" type="submit" data-icon="search"></button></form>
-    <button class="location" data-action="location"><span data-icon="pin"></span><span class="location-text">Tu zona<small id="current-location">Maracay, Aragua</small></span></button>
-    <div class="header-actions"><a href="#favoritos" class="hide-mobile" aria-label="Mis favoritos" data-icon="heart"></a><a href="#cuenta" id="account-link" aria-label="Iniciar sesión o crear cuenta" data-icon="user"></a><button class="cart-button" data-action="cart" aria-label="Abrir carrito"><span data-icon="bag"></span><b id="cart-count">0</b></button></div>
+    <nav class="nav" id="site-nav" aria-label="Principal"><a href="#catalogo" class="nav-shop">Productos</a><a href="#catalogo?pet=Perros">Perros</a><a href="#catalogo?pet=Gatos">Gatos</a><a href="#catalogo?pet=Aves">Aves</a><a href="#catalogo?pet=Peces">Peces</a><a href="#catalogo?pet=Pequeños">Pequeñas mascotas</a><a href="#servicios">Servicios</a><a href="#como-funciona">Cómo funciona</a><a class="affiliate-nav" href="#afiliate">Vende con nosotros</a></nav>
+    <div class="header-actions">
+      <button class="icon-btn" id="search-toggle" aria-label="Buscar productos" aria-expanded="false" aria-controls="search-form" data-icon="search"></button>
+      <button class="location icon-btn" data-action="location" aria-label="Cambiar zona"><span data-icon="pin"></span><span class="location-text"><small id="current-location">Maracay, Aragua</small></span></button>
+      <a href="#favoritos" class="icon-btn hide-mobile" aria-label="Mis favoritos" data-icon="heart"></a>
+      <a href="#cuenta" id="account-link" class="icon-btn" aria-label="Iniciar sesión o crear cuenta" data-icon="user"></a>
+      <button class="cart-button icon-btn" data-action="cart" aria-label="Abrir carrito"><span data-icon="bag"></span><b id="cart-count">0</b></button>
+      <button class="icon-btn" id="menu-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="site-nav" data-icon="menu"></button>
+    </div>
   </div>
-  <nav class="wrap nav" aria-label="Principal"><a href="#catalogo" class="nav-shop"><span data-icon="grid"></span> Todos los productos</a><a href="#catalogo?pet=Perros">Perros</a><a href="#catalogo?pet=Gatos">Gatos</a><a href="#catalogo?pet=Aves">Aves</a><a href="#catalogo?pet=Peces">Peces</a><a href="#catalogo?pet=Pequeños">Pequeñas mascotas</a><a href="#servicios">Servicios</a><a href="#como-funciona">Cómo funciona</a><a class="affiliate-nav" href="#afiliate">Vende con nosotros <span aria-hidden="true">↗</span></a></nav>
+  <form id="search-form" role="search"><div class="search-inner"><label class="sr-only" for="search">Buscar productos</label><input id="search" type="search" placeholder="¿Qué necesita tu mejor amigo?" autocomplete="off" enterkeyhint="search"><button aria-label="Buscar" class="search-button" type="submit" data-icon="search"></button></div></form>
 </header>
 <main id="main" tabindex="-1"></main>
 <footer><div class="wrap footer-grid">
-  <div><a href="#inicio" class="brand"><img src="assets/paw.svg" alt="" width="38" height="38"><span>animal<small>WORLD</small></span></a><p>Su pequeño mundo.<br>Todo nuestro cariño.</p><span class="footer-location">Maracay · Aragua · Venezuela</span></div>
+  <div><a href="#inicio" class="brand"><img src="assets/paw.svg" alt="" width="38" height="38"><span>animal<small>WORLD</small></span></a><p>Todo para sus patitas felices.</p><span class="footer-location">Maracay · Aragua · Venezuela</span></div>
   <div><h2>Explora</h2><a href="#catalogo">Productos</a><a href="#servicios">Servicios para mascotas</a><a href="#como-funciona">Cómo funciona</a><a href="#nosotros">Nuestra historia</a></div>
   <div><h2>Estamos para ayudarte</h2><a href="#ayuda">Preguntas frecuentes</a><a href="#envios">Envíos y retiros</a><a href="#devoluciones">Cambios y devoluciones</a><a href="#contacto">Contáctanos</a></div>
   <div><h2>Para comercios</h2><a href="#afiliate">Quiero afiliar mi negocio</a><a href="#cuenta">Acceso de tiendas y clientes</a></div>
