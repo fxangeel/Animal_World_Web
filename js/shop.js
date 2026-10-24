@@ -34,17 +34,35 @@ function petTile(name, small, art) {
 
 export function home() {
   const featured = products().slice(0, 4);
-  return `<section class="hero-bg"><div class="wrap hero"><div>
-      <div class="eyebrow">Para ellos, que lo son todo</div>
-      <h1>Su pequeño mundo.<br>Todo nuestro <em>cariño.</em></h1>
-      <p>Productos, cuidados y momentos felices para tu mascota, de comercios locales de Aragua y en un solo pedido.</p>
-      <div class="button-row"><a href="#catalogo" class="button">Explorar productos ${icon('arrow')}</a><a href="#servicios" class="button secondary">Descubrir servicios</a></div>
-      <div class="hero-note">${icon('pin')} Una comunidad local. Un mundo de posibilidades.</div>
-    </div>
-    <div class="hero-visual"><img class="hero-image" src="assets/hero-dog.jpg" alt="Golden retriever disfrutando un día al aire libre" fetchpriority="high" width="560" height="430">
-      <div class="hero-sticker">Pequeñas patas.<b>Gran amor.</b>♥</div>
-      <div class="hero-card"><span class="heart-bubble">${icon('heart')}</span><div><b>Su felicidad nos mueve</b><small>Conectamos Aragua, una huella a la vez.</small></div></div>
-    </div></div></section>
+  const spotlight = ['p2', 'p1', 'p10', 'p9'].map(productById).filter(Boolean);
+  const stores = state.catalog.vendors.length;
+  const paw = '<svg class="hero-paw" viewBox="0 0 64 64" aria-hidden="true"><g fill="currentColor"><ellipse cx="14" cy="26" rx="7" ry="10" transform="rotate(-20 14 26)"/><ellipse cx="27" cy="14" rx="7" ry="10"/><ellipse cx="42" cy="14" rx="7" ry="10"/><ellipse cx="54" cy="27" rx="7" ry="10" transform="rotate(20 54 27)"/><path d="M32 30c-10 0-18 9-18 17 0 6 5 9 10 8 5-1 6-2 8-2s3 1 8 2c5 1 10-2 10-8 0-8-8-17-18-17Z"/></g></svg>';
+  return `<section class="hero-wrap"><div class="hero-blue">
+      ${paw.replace('class="hero-paw"', 'class="hero-paw p1"')}${paw.replace('class="hero-paw"', 'class="hero-paw p2"')}${paw.replace('class="hero-paw"', 'class="hero-paw p3"')}
+      <div class="hero-copy">
+        <h1>Todo para<br>sus patitas<br>felices.</h1>
+        <p>En Animal World creemos que tu mascota merece lo mejor: productos y servicios de comercios locales de Aragua, en un solo pedido.</p>
+        <div class="hero-cta"><a href="#catalogo" class="pill">Comprar ahora</a><a href="#catalogo" class="pill-round" aria-label="Ir al catálogo">${icon('arrow')}</a></div>
+      </div>
+      <div class="hero-stage">
+        <div class="hero-arch"></div>
+        <img class="hero-dog" src="assets/hero-dog.jpg" alt="Cachorro golden retriever sentado con un tulipán en la boca" fetchpriority="high" width="720" height="1154">
+      </div>
+      <div class="hero-cat"><img src="assets/cat.jpg" alt="Gato blanco y negro asomado sobre una repisa de bambú" width="500" height="344"></div>
+      <div class="hero-badge" aria-hidden="true">
+        <svg class="badge-ring" viewBox="0 0 200 200"><defs><path id="ring" d="M100 100m-76 0a76 76 0 1 1 152 0a76 76 0 1 1-152 0"/></defs>
+          <text><textPath href="#ring" startOffset="0">Consiente a tu mascota ✦ Consiente a tu mascota ✦ </textPath></text></svg>
+        <img src="assets/food-yellow.svg" alt="" width="64" height="60">
+      </div>
+      <div class="hero-product" data-ids="${spotlight.map(p => p.id).join(',')}" data-i="0">
+        <div class="hp-visual"><img src="${esc(spotlight[0].images[0])}" alt="" width="150" height="140"></div>
+        <div class="hp-arrows"><button data-action="hero-product" data-dir="-1" aria-label="Producto anterior">${icon('arrow')}</button><button data-action="hero-product" data-dir="1" aria-label="Producto siguiente">${icon('arrow')}</button></div>
+        <a class="hp-name" href="#producto?id=${esc(spotlight[0].id)}">${esc(spotlight[0].name)}</a>
+        <b class="hp-price">${money(spotlight[0].price)}</b>
+      </div>
+      <div class="hero-stat"><span>Tiendas aliadas<br>de Aragua</span><b data-count="${stores}">${stores}+</b></div>
+      <button class="hero-cue" data-action="scroll-next" aria-label="Seguir bajando">${icon('arrow')}</button>
+    </div></section>
   <div class="wrap benefits">${[
     ['truck', 'Entrega local', 'Opciones para tu zona'],
     ['chat', 'Pide por WhatsApp', 'Tu pedido llega ya armado'],

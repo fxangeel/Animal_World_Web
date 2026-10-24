@@ -14,6 +14,7 @@ const icons = {
   phone: '<path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2Z"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',
   minus: '<path d="M5 12h14"/>',
+  menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
   x: '<path d="M6 6l12 12M18 6 6 18"/>',
   scissors: '<circle cx="5" cy="6" r="3"/><circle cx="5" cy="18" r="3"/><path d="m8 7 14 14M8 17 22 3"/>',
   medical: '<path d="M8 2v5a4 4 0 0 0 8 0V2M6 2h4m4 0h4M12 11v5a5 5 0 0 0 10 0v-3"/><circle cx="21" cy="10" r="2"/>',
