@@ -12,6 +12,7 @@ Catálogo multivendedor de productos y servicios para mascotas en Aragua, Venezu
 - Fichas con galería de imágenes, descripción corta, tienda vendedora y productos relacionados.
 - Carrito y pedido: se registra en el servidor (código `AW-XXXXXX`, con precios y existencias verificados allí) y se abre WhatsApp con productos, cantidades y total.
 - Cuentas con tres roles: **cliente** (ve sus pedidos), **tienda aliada** (catálogo, existencias y pedidos con sus productos) y **administración** (aprueba productos, gestiona pedidos, afiliaciones, servicios y mensajes).
+- Experiencia: sugerencias de búsqueda que toleran errores de ortografía, filtros activos como etiquetas, vista rápida, carrito lateral con "Deshacer", pedido agrupado por tienda, datos recordados para la próxima compra, perfil de cada tienda (`#tienda?id=`), opiniones de ejemplo, vistos recientemente, "Avísame cuando vuelva" en agotados y barra de compra fija en móvil. Código en `dist/js/extras.js` y `dist/js/checkout.js`.
 - Cómo funciona, testimonios (de ejemplo, marcados), preguntas frecuentes, servicios y Afíliate.
 - SEO por sección (título, descripción, `robots`), imágenes ligeras, etiquetas de accesibilidad y diseño pensado primero para 360–430 px.
 
@@ -35,6 +36,7 @@ Se editan en `dist/js/config.js`:
 | Campo | Estado |
 |---|---|
 | `whatsapp` | **Vacío.** Mientras no haya número, el botón abre WhatsApp para elegir el contacto manualmente. Formato: `584120000000`. |
+| `rate` | **Valor de ejemplo (100 Bs por $).** Solo muestra bolívares referenciales en pantalla; poner la tasa del día o `0` para ocultarlos. |
 | `email`, `instagram` | Vacíos; no se muestran hasta completarlos. |
 | `shipping`, `cities`, `payments` | Valores ya acordados (entrega local 3 $; Maracay, Turmero, Cagua y La Victoria; Pago Móvil, Binance y tarjeta a coordinar). La tarifa también está en `wrangler.toml` (`SHIPPING_CENTS`): cambiar ambos. |
 
