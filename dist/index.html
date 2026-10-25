@@ -40,7 +40,7 @@
       <button class="icon-btn" id="menu-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="site-nav" data-icon="menu"></button>
     </div>
   </div>
-  <form id="search-form" role="search"><div class="search-inner"><label class="sr-only" for="search">Buscar productos</label><input id="search" type="search" placeholder="¿Qué necesita tu mejor amigo?" autocomplete="off" enterkeyhint="search"><button aria-label="Buscar" class="search-button" type="submit" data-icon="search"></button></div></form>
+  <form id="search-form" role="search"><div class="search-inner"><label class="sr-only" for="search">Buscar productos</label><input id="search" type="search" placeholder="¿Qué necesita tu mejor amigo?" autocomplete="off" enterkeyhint="search" role="combobox" aria-expanded="false" aria-controls="suggest" aria-autocomplete="list"><button aria-label="Buscar" class="search-button" type="submit" data-icon="search"></button><ul id="suggest" class="suggest" role="listbox" aria-label="Sugerencias" hidden></ul></div></form>
 </header>
 <main id="main" tabindex="-1"></main>
 <footer><div class="wrap footer-grid">
@@ -52,7 +52,6 @@
 <nav class="mobile-nav" aria-label="Navegación móvil"><a href="#inicio"><span data-icon="home"></span><span>Inicio</span></a><a href="#catalogo"><span data-icon="grid"></span><span>Catálogo</span></a><a href="#servicios"><span data-icon="heart"></span><span>Servicios</span></a><a href="#favoritos"><span data-icon="heart"></span><span>Favoritos</span></a><button data-action="cart" aria-label="Abrir carrito"><span class="mobile-bag"><span data-icon="bag"></span><b id="mobile-cart-count">0</b></span><span>Carrito</span></button></nav>
 <a class="wa-float" id="wa-float" href="https://wa.me/" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp"><span data-icon="chat"></span><span>¿Te ayudamos?</span></a>
 <dialog id="modal" aria-label="Ventana"><button class="modal-close" aria-label="Cerrar ventana" data-action="close" data-icon="x"></button><div id="modal-body"></div></dialog>
-<div id="toast" role="status" aria-live="polite"></div>
-<noscript><p style="padding:24px;text-align:center">Animal World necesita JavaScript para mostrar el catálogo.</p></noscript>
+<div id="toast" popover="manual" role="status" aria-live="polite"></div><noscript><p style="padding:24px;text-align:center">Animal World necesita JavaScript para mostrar el catálogo.</p></noscript>
 </body>
 </html>
