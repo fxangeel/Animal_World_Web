@@ -26,7 +26,7 @@ export function storesStrip() {
   const vendors = state.catalog.vendors;
   if (vendors.length < 2) return '';
   return `<section class="wrap section" aria-labelledby="h-stores"><div class="section-head"><div><h2 id="h-stores">Tiendas aliadas</h2><p>Comercios locales reunidos bajo una misma marca.</p></div></div>
-    <div class="stores">${vendors.map(v => `<a class="store-card" href="#catalogo?vendor=${esc(v.id)}">${icon('store')}<b>${esc(v.name)}</b><span>${esc(v.city || 'Aragua')}</span><small>${esc(v.about || '')}</small></a>`).join('')}</div></section>`;
+    <div class="stores">${vendors.map(v => `<a class="store-card" href="#tienda?id=${esc(v.id)}">${icon('store')}<b>${esc(v.name)}</b><span>${esc(v.city || 'Aragua')}</span><small>${esc(v.about || '')}</small></a>`).join('')}</div></section>`;
 }
 
 const quotes = [

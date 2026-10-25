@@ -1,4 +1,5 @@
 // Utilidades de interfaz: iconos, formato, avisos y ventanas.
+import {CONFIG} from './config.js';
 const icons = {
   search: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/>',
   pin: '<path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/>',
@@ -38,16 +39,52 @@ export const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;',
 const number = new Intl.NumberFormat('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 export const money = n => `${number.format(n)} $`;
 export const normal = s => String(s ?? '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
-export const debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
+// Bolívares referenciales (tasa configurable en config.js). Vacío si no hay tasa.
+const bsNumber = new Intl.NumberFormat('es-VE', {maximumFractionDigits: 0});
+export const bs = n => (CONFIG.rate > 0 ? `≈ Bs. ${bsNumber.format(n * CONFIG.rate)}` : '');
+// Distancia de edición: tolera errores de ortografía al buscar.
+function distance(a, b) {
+  const row = Array.from({length: b.length + 1}, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) {
+    let prev = row[0]; row[0] = i;
+    for (let j = 1; j <= b.length; j++) {
+      const tmp = row[j];
+      row[j] = Math.min(row[j] + 1, row[j - 1] + 1, prev + (a[i - 1] === b[j - 1] ? 0 : 1));
+      prev = tmp;
+    }
+  }
+  return row[b.length];
+}
+export function fuzzyHas(hay, word) {
+  if (hay.includes(word)) return true;
+  if (word.length < 4) return false;
+  const max = word.length > 6 ? 2 : 1;
+  return hay.split(/[^a-z0-9]+/).some(t => t.length >= 3 && (distance(t.slice(0, word.length + 1), word) <= max || distance(t, word) <= max));
+}
+export const debounce =(fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
 export const dateEs = iso => new Date(iso.replace(' ', 'T') + 'Z').toLocaleDateString('es-VE', {day: 'numeric', month: 'short', year: 'numeric'});
 
 let toastTimer;
-export function toast(message) {
+// `action` opcional: {label, name, id} dibuja un botón dentro del aviso (Deshacer, Ver carrito…).
+export function toast(message, action) {
   const el = document.querySelector('#toast');
   el.textContent = message;
+  if (action) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = action.label;
+    b.dataset.action = action.name;
+    if (action.id) b.dataset.id = action.id;
+    el.append(b);
+  }
+  // Como popover queda en la capa superior y se ve incluso con una ventana abierta.
+  try { if (!el.matches(':popover-open')) el.showPopover(); } catch { /* sin popover: queda como elemento fijo */ }
   el.classList.add('visible');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove('visible'), 3600);
+  toastTimer = setTimeout(() => {
+    el.classList.remove('visible');
+    setTimeout(() => { if (!el.classList.contains('visible')) try { el.hidePopover(); } catch { /* nada */ } }, 320);
+  }, action ? 6000 : 3600);
 }
 
 const modal = document.querySelector('#modal');
@@ -56,6 +93,8 @@ let returnFocus;
 export function showModal(html, label = 'Ventana') {
   returnFocus = document.activeElement;
   modal.setAttribute('aria-label', label);
+  modal.classList.toggle('drawer', label === 'Carrito');
+  modal.classList.toggle('quick-view', label === 'Vista rápida');
   modalBody.innerHTML = html;
   hydrate(modalBody);
   if (!modal.open) modal.showModal();
