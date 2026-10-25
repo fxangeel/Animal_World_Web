@@ -119,5 +119,21 @@ export function infoPage(path) {
     <h2>Revisión y solución</h2><p>Revisamos cada caso y coordinamos un reemplazo o una devolución según corresponda. Si el inconveniente es atribuible al producto o a la entrega, cubrimos la logística de la solución.</p>
     <h2>Cuida el producto mientras lo revisamos</h2><p>Conserva el empaque y evita usar productos que presenten daños o alteraciones. En alimentos, incluye el lote y la fecha de vencimiento.</p>
     <a href="#contacto" class="button">Contactar al equipo ${icon('arrow')}</a></div>`, 'Cambios y devoluciones');
+  if (path === 'terminos') return page('Términos y condiciones', 'Cómo funciona el uso de Animal World.', `<div class="content-narrow">
+    <p class="subtle">Texto general de referencia. Puede actualizarse a medida que la plataforma crezca.</p>
+    <h2>Qué es Animal World</h2><p>Animal World es un catálogo que reúne productos y servicios de comercios locales de Aragua. Cada producto lo publica y lo despacha la tienda aliada indicada en su ficha.</p>
+    <h2>Pedidos</h2><p>Al enviar un pedido registras tu solicitud de compra. La tienda confirma disponibilidad, costo final y coordina el pago y la entrega contigo por WhatsApp. El pedido se considera acordado cuando ambas partes lo confirman.</p>
+    <h2>Precios y existencias</h2><p>Los precios se muestran en dólares y los bolívares son solo una referencia. Las existencias pueden cambiar entre que ves un producto y se confirma tu pedido; si algo no está disponible, te avisamos.</p>
+    <h2>Pagos y entregas</h2><p>Los medios de pago y las zonas de entrega vigentes se indican en <a href="#envios">Envíos y retiros</a> y al hacer el pedido.</p>
+    <h2>Cambios y devoluciones</h2><p>Consulta el procedimiento en <a href="#devoluciones">Cambios y devoluciones</a>.</p>
+    <h2>Cuentas</h2><p>Eres responsable de mantener segura tu contraseña. Podemos suspender cuentas que usen la plataforma de forma indebida.</p>
+    <a href="#contacto" class="button">¿Dudas? Escríbenos ${icon('arrow')}</a></div>`, 'Términos y condiciones');
+  if (path === 'privacidad') return page('Política de privacidad', 'Qué datos usamos y para qué.', `<div class="content-narrow">
+    <p class="subtle">Texto general de referencia. Puede actualizarse a medida que la plataforma crezca.</p>
+    <h2>Qué datos recibimos</h2><p>Nombre, teléfono, dirección y notas cuando haces un pedido o una solicitud; correo y contraseña cuando creas una cuenta; y los mensajes que nos envías. La contraseña se guarda cifrada.</p>
+    <h2>Para qué los usamos</h2><p>Solo para gestionar tu pedido, tu cuenta y responder tus consultas. Compartimos con la tienda aliada únicamente lo necesario para preparar y entregar lo que compraste.</p>
+    <h2>Almacenamiento en tu dispositivo</h2><p>Guardamos en tu navegador el carrito, tus favoritos, tu zona, tus datos de compra recordados y tu preferencia de modo claro u oscuro, para que no tengas que repetirlos. Puedes borrarlos desde la configuración de tu navegador. La sesión usa una cookie necesaria para mantenerte conectado.</p>
+    <h2>Servicios de terceros</h2><p>Las tipografías se cargan desde Google Fonts. El pedido se envía a través de WhatsApp, que tiene su propia política de privacidad.</p>
+    <h2>Tus derechos</h2><p>Puedes pedirnos que corrijamos o eliminemos tus datos escribiéndonos desde <a href="#contacto">Contacto</a>.</p></div>`, 'Política de privacidad');
   return page('Esta página se fue de paseo', 'Vuelve al inicio para encontrar lo que buscas.', '<a class="button" href="#inicio">Volver al inicio</a>', 'No encontrada');
 }

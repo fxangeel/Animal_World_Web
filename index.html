@@ -9,11 +9,15 @@
   <meta name="robots" content="index,follow">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="es_VE">
+  <meta property="og:url" content="">
   <meta property="og:site_name" content="Animal World">
   <meta property="og:title" content="Animal World · Todo para tu mascota en Aragua">
   <meta property="og:description" content="Productos y servicios para perros, gatos, aves, peces y más de comercios locales de Aragua. Haz tu pedido por WhatsApp.">
   <meta name="twitter:card" content="summary">
   <link rel="icon" href="assets/paw.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/icon-192.png">
+  <meta name="color-scheme" content="light dark">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&family=Fredoka:wght@600;700&display=swap">
@@ -21,8 +25,10 @@
   <link rel="stylesheet" href="mobile.css">
   <link rel="stylesheet" href="theme.css">
   <link rel="stylesheet" href="theme-mobile.css">
-  <link rel="preload" as="image" href="assets/hero-dog.jpg" fetchpriority="high">
+  <link rel="stylesheet" href="enhance.css">
+  <link rel="preload" as="image" href="assets/hero-dog.webp" type="image/webp" fetchpriority="high">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Animal World","description":"Catálogo de productos y servicios para mascotas de comercios locales de Aragua, Venezuela.","areaServed":{"@type":"AdministrativeArea","name":"Aragua, Venezuela"},"logo":"assets/paw.svg"}</script>
+  <script src="js/theme-init.js"></script>
   <script type="module" src="js/app.js"></script>
 </head>
 <body>
@@ -30,25 +36,26 @@
 <header id="site-header">
   <div class="bar">
     <a href="#inicio" class="brand" aria-label="Animal World, inicio"><img src="assets/paw.svg" alt="" width="42" height="42"><span>animal<small>WORLD</small></span></a>
-    <nav class="nav" id="site-nav" aria-label="Principal"><a href="#catalogo" class="nav-shop">Productos</a><a href="#catalogo?pet=Perros">Perros</a><a href="#catalogo?pet=Gatos">Gatos</a><a href="#catalogo?pet=Aves">Aves</a><a href="#catalogo?pet=Peces">Peces</a><a href="#catalogo?pet=Pequeños">Pequeñas mascotas</a><a href="#servicios">Servicios</a><a href="#como-funciona">Cómo funciona</a><a class="affiliate-nav" href="#afiliate">Vende con nosotros</a></nav>
+    <nav class="nav" id="site-nav" aria-label="Principal"><a href="#catalogo" class="nav-shop">Productos</a><a href="#catalogo?pet=Perros">Perros</a><a href="#catalogo?pet=Gatos">Gatos</a><a href="#catalogo?pet=Aves">Aves</a><a href="#catalogo?pet=Peces">Peces</a><a href="#catalogo?pet=Pequeños">Pequeñas mascotas</a><a href="#ofertas">Ofertas</a><a href="#servicios">Servicios</a><a href="#como-funciona">Cómo funciona</a><a class="affiliate-nav" href="#afiliate">Vende con nosotros</a></nav>
     <div class="header-actions">
       <button class="icon-btn" id="search-toggle" aria-label="Buscar productos" aria-expanded="false" aria-controls="search-form" data-icon="search"></button>
       <button class="location icon-btn" data-action="location" aria-label="Cambiar zona"><span data-icon="pin"></span><span class="location-text"><small id="current-location">Maracay, Aragua</small></span></button>
       <a href="#favoritos" class="icon-btn hide-mobile" aria-label="Mis favoritos" data-icon="heart"></a>
       <a href="#cuenta" id="account-link" class="icon-btn" aria-label="Iniciar sesión o crear cuenta" data-icon="user"></a>
       <button class="cart-button icon-btn" data-action="cart" aria-label="Abrir carrito"><span data-icon="bag"></span><b id="cart-count">0</b></button>
+      <button class="icon-btn" id="theme-toggle" aria-label="Cambiar a modo oscuro" aria-pressed="false" data-icon="moon"></button>
       <button class="icon-btn" id="menu-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="site-nav" data-icon="menu"></button>
     </div>
   </div>
   <form id="search-form" role="search"><div class="search-inner"><label class="sr-only" for="search">Buscar productos</label><input id="search" type="search" placeholder="¿Qué necesita tu mejor amigo?" autocomplete="off" enterkeyhint="search" role="combobox" aria-expanded="false" aria-controls="suggest" aria-autocomplete="list"><button aria-label="Buscar" class="search-button" type="submit" data-icon="search"></button><ul id="suggest" class="suggest" role="listbox" aria-label="Sugerencias" hidden></ul></div></form>
 </header>
-<main id="main" tabindex="-1"></main>
+<main id="main" tabindex="-1"><div class="wrap skeleton-page" aria-hidden="true"><div class="sk sk-title"></div><div class="sk-grid"><div class="sk sk-card"></div><div class="sk sk-card"></div><div class="sk sk-card"></div><div class="sk sk-card"></div></div></div></main>
 <footer><div class="wrap footer-grid">
   <div><a href="#inicio" class="brand"><img src="assets/paw.svg" alt="" width="38" height="38"><span>animal<small>WORLD</small></span></a><p>Todo para sus patitas felices.</p><span class="footer-location">Maracay · Aragua · Venezuela</span></div>
-  <div><h2>Explora</h2><a href="#catalogo">Productos</a><a href="#servicios">Servicios para mascotas</a><a href="#como-funciona">Cómo funciona</a><a href="#nosotros">Nuestra historia</a></div>
-  <div><h2>Estamos para ayudarte</h2><a href="#ayuda">Preguntas frecuentes</a><a href="#envios">Envíos y retiros</a><a href="#devoluciones">Cambios y devoluciones</a><a href="#contacto">Contáctanos</a></div>
+  <div><h2>Explora</h2><a href="#catalogo">Productos</a><a href="#ofertas">Ofertas</a><a href="#servicios">Servicios para mascotas</a><a href="#como-funciona">Cómo funciona</a><a href="#nosotros">Nuestra historia</a></div>
+  <div><h2>Estamos para ayudarte</h2><a href="#ayuda">Preguntas frecuentes</a><a href="#envios">Envíos y retiros</a><a href="#devoluciones">Cambios y devoluciones</a><a href="#contacto">Contáctanos</a><a href="#terminos">Términos y condiciones</a><a href="#privacidad">Política de privacidad</a></div>
   <div><h2>Para comercios</h2><a href="#afiliate">Quiero afiliar mi negocio</a><a href="#cuenta">Acceso de tiendas y clientes</a></div>
-</div><div class="wrap footer-bottom"><span>© 2026 Animal World</span><span>Pago Móvil · Binance · Tarjeta (a coordinar)</span></div></footer>
+</div><div class="wrap footer-bottom"><span>© 2026 Animal World</span><span>Pago Móvil · Binance · Tarjeta (a coordinar)</span><button class="install-button" id="install-app" type="button" hidden>Instalar la app</button></div></footer>
 <nav class="mobile-nav" aria-label="Navegación móvil"><a href="#inicio"><span data-icon="home"></span><span>Inicio</span></a><a href="#catalogo"><span data-icon="grid"></span><span>Catálogo</span></a><a href="#servicios"><span data-icon="heart"></span><span>Servicios</span></a><a href="#favoritos"><span data-icon="heart"></span><span>Favoritos</span></a><button data-action="cart" aria-label="Abrir carrito"><span class="mobile-bag"><span data-icon="bag"></span><b id="mobile-cart-count">0</b></span><span>Carrito</span></button></nav>
 <a class="wa-float" id="wa-float" href="https://wa.me/" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp"><span data-icon="chat"></span><span>¿Te ayudamos?</span></a>
 <dialog id="modal" aria-label="Ventana"><button class="modal-close" aria-label="Cerrar ventana" data-action="close" data-icon="x"></button><div id="modal-body"></div></dialog>

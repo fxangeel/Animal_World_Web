@@ -9,6 +9,7 @@ import {addToCart, changeQuantity, removeFromCart, undoRemove, showCart, showChe
 import {quickView, storePage, catalogAfter, productAfter, clearSticky} from './extras.js';
 import * as acc from './account.js';
 import {refreshMotion} from './motion.js';
+import {structuredData} from './enhance.js';
 
 const main = document.querySelector('#main');
 const searchInput = document.querySelector('#search');
@@ -26,6 +27,9 @@ const SEO = {
   envios: ['Envíos y retiros', 'Entrega local y retiro coordinado en el centro de Aragua.'],
   devoluciones: ['Cambios y devoluciones', 'Qué hacer si un producto llega dañado, defectuoso o distinto al pedido.'],
   tienda: ['Tienda aliada', 'Productos de una tienda aliada de Animal World en Aragua.'],
+  terminos: ['Términos y condiciones', 'Cómo funciona el uso de Animal World: pedidos, precios, pagos, entregas y cuentas.'],
+  privacidad: ['Política de privacidad', 'Qué datos usa Animal World y para qué.'],
+  ofertas: ['Ofertas para tu mascota', 'Productos con precio rebajado de tiendas locales de Aragua.'],
   contacto: ['Contacto', 'Escríbenos para consultas, pedidos o para afiliar tu negocio.'],
   cuenta: ['Mi cuenta', 'Tus pedidos y datos en Animal World.'],
   panel: ['Mi tienda', 'Panel de tienda aliada de Animal World.'],
@@ -48,6 +52,7 @@ function setMeta(path, params) {
   set('meta[name=description]', desc);
   set('meta[property="og:title"]', document.title);
   set('meta[property="og:description"]', desc);
+  set('meta[property="og:url"]', location.href);
   set('meta[name=robots]', PRIVATE.includes(path) ? 'noindex' : 'index,follow');
 }
 
@@ -60,6 +65,7 @@ const views = {
   inicio: [home],
   catalogo: [(p) => catalog(p), catalogAfter],
   favoritos: [(p) => catalog(p, true), catalogAfter],
+  ofertas: [(p) => { p.set('offer', '1'); return catalog(p); }, (p) => catalogAfter(p)],
   tienda: [storePage],
   servicios: [servicePage],
   'como-funciona': [howPage],
@@ -79,6 +85,7 @@ function render() {
   hydrate(main);
   updateChrome();
   setMeta(path, params);
+  structuredData(path, params);
   document.querySelectorAll('.nav a, .mobile-nav a').forEach(a => {
     const here = a.getAttribute('href')?.slice(1).split('?')[0] === path && !(a.getAttribute('href').includes('?') && path === 'catalogo');
     a.toggleAttribute('aria-current', here);
@@ -153,6 +160,11 @@ const actions = {
     name.href = `#producto?id=${p.id}`;
     box.querySelector('.hp-price').textContent = money(p.price);
   },
+  more(b) { setParams(p => p.set('n', b.dataset.n)); },
+  zoom() {
+    const img = document.querySelector('#gallery-main');
+    showModal(`<img class="zoom-image" src="${img.src}" alt="${img.alt}">`, 'Imagen ampliada');
+  },
   'scroll-next'() { window.scrollTo({top: innerHeight - 8, behavior: 'smooth'}); },
   close: closeModal,
   cart: showCart,
@@ -205,8 +217,8 @@ document.addEventListener('click', e => {
 
 document.addEventListener('change', e => {
   const t = e.target;
-  if (t.name === 'pet' || t.name === 'category' || t.name === 'price' || t.name === 'vendor') setParams(p => (t.value ? p.set(t.name, t.value) : p.delete(t.name)));
-  if (t.id === 'sort') setParams(p => (t.value && t.value !== 'featured' ? p.set('sort', t.value) : p.delete('sort')));
+  if (t.name === 'pet' || t.name === 'category' || t.name === 'price' || t.name === 'vendor') setParams(p => { p.delete('n'); t.value ? p.set(t.name, t.value) : p.delete(t.name); });
+  if (t.id === 'sort') setParams(p => { p.delete('n'); t.value && t.value !== 'featured' ? p.set('sort', t.value) : p.delete('sort'); });
   if (t.dataset.stock) acc.updateStock(t.dataset.stock, t.value);
   if (t.dataset.item) acc.updateItem(t.dataset.item, t.value);
   if (t.dataset.order) acc.setOrderStatus(t.dataset.order, t.value);

@@ -73,10 +73,17 @@ const passwordForm = (forced) => `<form id="password-form" class="content-card">
   <button class="button" type="submit">Guardar contraseña</button></form>`;
 
 // ---------- Pedidos ----------
+const STEPS = ORDER_STATUS.slice(0, 5);
+const tracker = status => {
+  if (status === 'Cancelado') return '<p class="order-cancelled">Pedido cancelado</p>';
+  const at = STEPS.indexOf(status);
+  return `<ol class="tracker" aria-label="Seguimiento del pedido">${STEPS.map((t, i) => `<li class="${i <= at ? 'done' : ''} ${i === at ? 'now' : ''}" ${i === at ? 'aria-current="step"' : ''}>${t}</li>`).join('')}</ol>`;
+};
 function orderCard(o, {manage = false, vendor = false} = {}) {
   return `<article class="order-card"><div class="order-head"><b>${esc(o.code)}</b>
       ${manage ? `<label class="inline-select"><span class="sr-only">Estado del pedido ${esc(o.code)}</span><select data-order="${esc(o.code)}">${ORDER_STATUS.map(s => `<option ${o.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select></label>` : `<span class="status">${esc(o.status)}</span>`}</div>
     <p>${dateEs(o.date)} · ${esc(o.delivery)} · ${esc(o.payment)} · ${esc(o.city)}</p>
+    ${manage || vendor ? '' : tracker(o.status)}
     <ul class="order-items">${o.items.map(i => `<li><span>${i.qty} × ${esc(i.name)}</span>${vendor ? `<label class="inline-select"><span class="sr-only">Estado de ${esc(i.name)}</span><select data-item="${i.id}">${['Pendiente', 'Preparado'].map(s => `<option ${i.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select></label>` : `<b>${money(i.price * i.qty)}</b>`}</li>`).join('')}</ul>
     ${o.customer ? `<p class="order-contact"><b>${esc(o.customer)}</b> · ${esc(o.phone)}${o.address ? `<br>${esc(o.address)}` : ''}${o.notes ? `<br><i>${esc(o.notes)}</i>` : ''}</p>` : ''}
     ${vendor ? '' : `<p class="order-total">Total: <b>${money(o.total)}</b></p>`}</article>`;
@@ -123,7 +130,15 @@ export async function panelLoad() {
     const [p, o] = await Promise.all([api.get('/vendor/products'), api.get('/orders')]);
     panelProducts = p.products;
     const pending = panelProducts.filter(x => x.status === 'pending').length;
-    box.innerHTML = `<div class="stats"><div class="stat"><small>Productos</small><b>${panelProducts.length}</b></div><div class="stat"><small>En revisión</small><b>${pending}</b></div><div class="stat"><small>Pedidos</small><b>${o.orders.length}</b></div></div>
+    const live = o.orders.filter(x => x.status !== 'Cancelado');
+    const sold = new Map();
+    let sales = 0;
+    for (const ord of live) for (const i of ord.items) { sales += i.price * i.qty; sold.set(i.name, (sold.get(i.name) || 0) + i.qty); }
+    const top = [...sold].sort((a, b) => b[1] - a[1]).slice(0, 5);
+    const low = panelProducts.filter(x => x.status === 'approved' && x.stock <= 5);
+    box.innerHTML = `<div class="stats"><div class="stat"><small>Productos</small><b>${panelProducts.length}</b></div><div class="stat"><small>En revisión</small><b>${pending}</b></div><div class="stat"><small>Pedidos</small><b>${live.length}</b></div><div class="stat"><small>Ventas registradas</small><b>${money(sales)}</b></div><div class="stat ${low.length ? 'warn' : ''}"><small>Stock bajo</small><b>${low.length}</b></div></div>
+      ${low.length ? `<div class="alert-list" role="status"><b>Reponer pronto</b><ul>${low.map(x => `<li>${esc(x.name)}: ${x.stock === 0 ? 'agotado' : `quedan ${x.stock}`}</li>`).join('')}</ul></div>` : ''}
+      ${top.length ? `<div class="content-card" style="margin-top:20px"><h2>Lo más pedido</h2><ul class="top-list">${top.map(([n, q]) => `<li><span>${esc(n)}</span><b>${q} u.</b></li>`).join('')}</ul></div>` : ''}
       <div class="section-head"><div><h2>Mi catálogo</h2><p>Los productos nuevos o editados se publican tras la revisión de la administración. Las existencias se actualizan al instante.</p></div><button class="button" data-action="new-product">${icon('plus')} Añadir producto</button></div>
       <div class="table-wrap"><table><thead><tr><th>Producto</th><th>Precio</th><th>Existencias</th><th>Estado</th><th></th></tr></thead><tbody>
       ${panelProducts.map(x => `<tr><td>${esc(x.name)}<br><small>${esc(x.pet)} · ${esc(x.category)}</small></td><td>${money(x.price)}</td>

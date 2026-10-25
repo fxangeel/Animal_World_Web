@@ -1,0 +1,116 @@
+/* Animal World · mejoras: carga, ficha, pedidos, sin conexión y modo oscuro. Se carga al final para poder sobrescribir. */
+
+/* Esqueleto de carga mientras llega el catálogo */
+.skeleton-page{padding:calc(var(--hh) + 32px) 0 48px;min-height:70vh}
+.sk{border-radius:20px;background:linear-gradient(90deg,var(--sage) 25%,var(--cream) 50%,var(--sage) 75%);background-size:200% 100%;animation:sk 1.2s linear infinite}
+.sk-title{height:44px;width:min(420px,70%);margin-bottom:28px}
+.sk-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.sk-card{height:340px;border-radius:28px}
+@keyframes sk{to{background-position:-200% 0}}
+@media(max-width:900px){.sk-grid{grid-template-columns:repeat(2,1fr);gap:14px}.sk-card{height:250px}}
+@media(prefers-reduced-motion:reduce){.sk{animation:none}}
+
+/* Ver más productos */
+.load-more{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;gap:12px;padding:12px 0;color:var(--muted);font-size:var(--fs-sm)}
+
+/* Ficha: zoom, entrega y datos */
+.gallery-main{position:relative}
+.zoom-button{position:absolute;right:12px;bottom:12px;width:var(--tap);height:var(--tap);display:grid;place-items:center;border-radius:50%;background:#fff;color:var(--navy);box-shadow:0 4px 14px #0f1e5a33;transition:transform .2s var(--ease)}
+.zoom-button:hover{transform:scale(1.08)}
+#gallery-main{cursor:zoom-in}
+.zoom-image{width:min(80vw,640px);max-height:78vh;object-fit:contain;border-radius:var(--r-md);background:var(--cream);padding:16px}
+.delivery-line{display:flex;gap:10px;align-items:flex-start;margin:var(--sp-4) 0;padding:12px 14px;border-radius:16px;background:var(--cream);font-size:var(--fs-sm);color:var(--muted)}
+.delivery-line svg{margin-top:2px;color:var(--green)}
+.delivery-line b{color:var(--ink)}
+.link-button.inline{display:inline;padding:0;text-decoration:underline;font-weight:600;color:var(--green)}
+.specs{width:100%;border-collapse:collapse;font-size:var(--fs-sm)}
+.specs th,.specs td{text-align:left;padding:8px 0;border-bottom:1px solid var(--line)}
+.specs th{width:40%;color:var(--muted);font-weight:600}
+
+/* Seguimiento del pedido */
+.tracker{display:flex;list-style:none;margin:var(--sp-3) 0 var(--sp-4);padding:0;gap:0}
+.tracker li{flex:1;position:relative;text-align:center;font-size:var(--fs-xs);color:var(--muted);font-weight:600;padding-top:28px}
+.tracker li:before{content:'';position:absolute;top:6px;left:50%;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:var(--line);z-index:1}
+.tracker li:after{content:'';position:absolute;top:12px;left:-50%;width:100%;height:3px;background:var(--line)}
+.tracker li:first-child:after{display:none}
+.tracker li.done{color:var(--ink)}
+.tracker li.done:before,.tracker li.done:after{background:var(--green)}
+.tracker li.now:before{box-shadow:0 0 0 5px #2f63e840}
+.tracker.cancelled li{opacity:.5}
+.order-cancelled{color:var(--coral);font-weight:700;font-size:var(--fs-sm)}
+
+/* Paneles: estadísticas y alertas */
+.stat.warn b{color:var(--coral)}
+.alert-list{margin:var(--sp-4) 0 0;padding:14px 16px;border-radius:16px;background:var(--coral-soft);color:#7a2a14;font-size:var(--fs-sm)}
+.alert-list b{display:block;margin-bottom:4px}
+.alert-list li{padding:2px 0}
+.top-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:var(--fs-sm)}
+
+/* Sin conexión e instalación */
+.offline-bar{position:sticky;top:0;z-index:60;background:var(--navy);color:#fff;text-align:center;padding:8px 16px;font-size:var(--fs-sm)}
+.offline-bar[hidden]{display:none}
+.install-button{background:var(--lemon);color:var(--navy);border-radius:999px;padding:8px 16px;font-weight:700;font-size:var(--fs-sm)}
+.install-button[hidden]{display:none}
+.footer-bottom{align-items:center;flex-wrap:wrap;gap:12px}
+
+/* Hero: la franja de tiendas no choca con el botón de WhatsApp */
+.wa-float{transition:opacity .25s,transform .25s var(--ease)}
+body[data-page=inicio] .wa-float.at-top span:last-child{display:none}
+body[data-page=inicio] .wa-float.at-top{padding-left:14px;padding-right:14px}
+
+/* ---------- Modo oscuro ---------- */
+html[data-theme=dark]{color-scheme:dark;--green:#3d6fee;--green-dark:#9db8ff;--sage:#1b2760;--cream:#131c45;--ink:#e9eeff;--muted:#aab6e0;--coral:#ff8a6b;--coral-soft:#3a2230;--line:#2b376d;--focus:#fff;--shadow:0 8px 28px #00000066}
+html[data-theme=dark] body{background:#0c1230}
+html[data-theme=dark] .product,
+html[data-theme=dark] .mobile-nav,
+html[data-theme=dark] .cart-summary,
+html[data-theme=dark] .suggest,
+html[data-theme=dark] .sticky-buy,
+html[data-theme=dark] .service-mini,
+html[data-theme=dark] .skip:focus{background:#16204f;color:var(--ink)}
+html[data-theme=dark] .service-mini:hover{background:#1b2760}
+html[data-theme=dark] input:not([type=checkbox]):not([type=radio]),
+html[data-theme=dark] select,
+html[data-theme=dark] textarea{background:#101842;border-color:#34427c;color:var(--ink)}
+html[data-theme=dark] .product-visual,
+html[data-theme=dark] .gallery-main,
+html[data-theme=dark] .thumb,
+html[data-theme=dark] .qv img,
+html[data-theme=dark] .suggest img{background:#e8eefc}
+html[data-theme=dark] .zoom-image{background:#e8eefc}
+html[data-theme=dark] .zoom-button,html[data-theme=dark] .quick-button,html[data-theme=dark] .favorite{color:#14246b}
+html[data-theme=dark] .benefits,
+html[data-theme=dark] .services-banner,
+html[data-theme=dark] .store-card,
+html[data-theme=dark] .quote,
+html[data-theme=dark] .step,
+html[data-theme=dark] .content-card{background:#131c45;border-color:var(--line)}
+html[data-theme=dark] .pet-circle{background:#1b2760!important}
+html[data-theme=dark] .pet-tile:nth-child(n) .pet-circle svg{color:#cfdcff}
+html[data-theme=dark] .button.secondary,
+html[data-theme=dark] .text-link,
+html[data-theme=dark] .mini-button{color:#cfdcff;border-color:#3b4a8a}
+html[data-theme=dark] .button.light{background:var(--lemon);color:var(--navy);border-color:var(--lemon)}
+html[data-theme=dark] .price,
+html[data-theme=dark] .product h3 a{color:var(--ink)}
+html[data-theme=dark] .product h3 a:hover,
+html[data-theme=dark] .eyebrow{color:#ffb09a}
+html[data-theme=dark] footer{background:#080d26}
+html[data-theme=dark] .status{background:#1b2760;color:#cfdcff}
+html[data-theme=dark] .alert-list{color:#ffd9cc}
+html[data-theme=dark] .sk{background:linear-gradient(90deg,#16204f 25%,#1d2a66 50%,#16204f 75%);background-size:200% 100%}
+html[data-theme=dark] ::selection{background:#3d6fee;color:#fff}
+
+/* Cabecera: con más enlaces y el botón de tema, se compacta antes de desbordar */
+@media(min-width:1241px) and (max-width:1620px){
+  .nav{gap:var(--sp-4);font-size:.8rem}
+  .nav .affiliate-nav{padding:0 14px}
+  .bar{gap:var(--sp-3)}
+  .location-text{display:none}
+}
+
+html[data-theme=dark] .tag{background:#fff;color:#14246b}
+html[data-theme=dark] .tag.sale{background:#ffd9cc;color:#7a2a14}
+html[data-theme=dark] .favorite,html[data-theme=dark] .quick-button,html[data-theme=dark] .zoom-button{background:#fff;color:#14246b}
+html[data-theme=dark] .favorite.active{color:#d4502d}
+html[data-theme=dark] input[type=radio],html[data-theme=dark] input[type=checkbox]{accent-color:#7da2ff}
