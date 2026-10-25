@@ -13,6 +13,7 @@ Catálogo multivendedor de productos y servicios para mascotas en Aragua, Venezu
 - Carrito y pedido: se registra en el servidor (código `AW-XXXXXX`, con precios y existencias verificados allí) y se abre WhatsApp con productos, cantidades y total.
 - Cuentas con tres roles: **cliente** (ve sus pedidos), **tienda aliada** (catálogo, existencias y pedidos con sus productos) y **administración** (aprueba productos, gestiona pedidos, afiliaciones, servicios y mensajes).
 - Experiencia: sugerencias de búsqueda que toleran errores de ortografía, filtros activos como etiquetas, vista rápida, carrito lateral con "Deshacer", pedido agrupado por tienda, datos recordados para la próxima compra, perfil de cada tienda (`#tienda?id=`), opiniones de ejemplo, vistos recientemente, "Avísame cuando vuelva" en agotados y barra de compra fija en móvil. Código en `dist/js/extras.js` y `dist/js/checkout.js`.
+- Mejoras de calidad (`dist/js/enhance.js`, `dist/enhance.css`): modo claro/oscuro (sigue al sistema y se recuerda), esqueletos de carga, app instalable y con catálogo sin conexión (`manifest.webmanifest`, `sw.js`), datos estructurados JSON-LD por producto, tienda y migas, imágenes WebP, sección y página de **Ofertas** (`#ofertas`), «Ver más» en el catálogo, ficha con zoom, datos del producto y entrega según tu zona, seguimiento del pedido para el cliente, estadísticas y alertas de stock bajo en el panel de la tienda, y páginas de Términos y Privacidad (textos generales de referencia).
 - Cómo funciona, testimonios (de ejemplo, marcados), preguntas frecuentes, servicios y Afíliate.
 - SEO por sección (título, descripción, `robots`), imágenes ligeras, etiquetas de accesibilidad y diseño pensado primero para 360–430 px.
 
@@ -69,6 +70,7 @@ No editar `gh-pages` directamente.
 - Las contraseñas se guardan con PBKDF2-SHA256; las sesiones expiran a los 7 días; el acceso tiene límite de intentos. Los precios y existencias siempre se calculan en el servidor.
 - Aprobar una afiliación crea la cuenta de la tienda con una contraseña temporal que se muestra una sola vez y debe cambiarse al entrar.
 - No hay recuperación de contraseña por correo, avisos por correo ni carga de fotos propia (los productos usan ilustraciones o una dirección `https` de imagen). Son los siguientes pasos naturales (R2 para imágenes, servicio de correo).
+- Pendiente por falta de datos o cuentas externas: número de WhatsApp, tasa del día automática, fotos propias (R2), correos (recuperación de contraseña y avisos), analítica, imagen para compartir (`og:image` necesita dominio) y revisión legal de los textos.
 - Las rutas usan `#`, así que los buscadores ven una sola página; el título y la descripción cambian por sección para quien comparte o navega. Para posicionamiento por producto haría falta prerenderizar.
 - Pendiente: revisar en teléfonos físicos Android e iPhone; dominio propio; `sitemap.xml` cuando exista el dominio.
 

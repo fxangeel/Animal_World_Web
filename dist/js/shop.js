@@ -33,6 +33,13 @@ function petTile(name, small, art) {
   return `<a href="#catalogo?pet=${encodeURIComponent(name)}" class="pet-tile"><div class="pet-circle">${art}</div><strong>${label}</strong><small>${small}</small></a>`;
 }
 
+function offersStrip() {
+  const list = products().filter(p => p.old > p.price && p.stock > 0).slice(0, 4);
+  if (!list.length) return '';
+  return `<section class="wrap section offers" aria-labelledby="h-offers"><div class="section-head"><div><div class="eyebrow">Ofertas</div><h2 id="h-offers">Precios que se agradecen</h2><p>Rebajas en productos que sí van a usar. Hasta agotar existencias.</p></div><a href="#ofertas" class="text-link">Ver ofertas <span>↗</span></a></div>
+    <div class="products-grid">${list.map(productCard).join('')}</div></section>`;
+}
+
 export function home() {
   const featured = products().slice(0, 4);
   const spotlight = ['p2', 'p1', 'p10', 'p9'].map(productById).filter(Boolean);
@@ -47,9 +54,9 @@ export function home() {
       </div>
       <div class="hero-stage">
         <div class="hero-arch"></div>
-        <img class="hero-dog" src="assets/hero-dog.jpg" alt="Cachorro golden retriever sentado con un tulipán en la boca" fetchpriority="high" width="720" height="1154">
+        <img class="hero-dog" src="assets/hero-dog.webp" alt="Cachorro golden retriever sentado con un tulipán en la boca" fetchpriority="high" width="720" height="1154">
       </div>
-      <div class="hero-cat"><img src="assets/cat.jpg" alt="Gato blanco y negro asomado sobre una repisa de bambú" width="500" height="344"></div>
+      <div class="hero-cat"><img src="assets/cat.webp" alt="Gato blanco y negro asomado sobre una repisa de bambú" width="500" height="344"></div>
       <div class="hero-badge" aria-hidden="true">
         <svg class="badge-ring" viewBox="0 0 200 200"><defs><path id="ring" d="M100 100m-76 0a76 76 0 1 1 152 0a76 76 0 1 1-152 0"/></defs>
           <text><textPath href="#ring" startOffset="0">Consiente a tu mascota ✦ Consiente a tu mascota ✦ </textPath></text></svg>
@@ -72,8 +79,8 @@ export function home() {
   ].map(([i, t, s]) => `<div class="benefit">${icon(i)}<div><b>${t}</b><span>${s}</span></div></div>`).join('')}</div>
   <section class="wrap section" aria-labelledby="h-pets"><div class="section-head"><div><h2 id="h-pets">¿A quién vamos a consentir?</h2><p>Cada mascota tiene su mundo. Aquí hay algo para el suyo.</p></div><a href="#catalogo" class="text-link">Ver todo <span>↗</span></a></div>
     <div class="pets-grid">
-      ${petTile('Perros', 'Lealtad con cuatro patas', '<img src="assets/hero-dog.jpg" alt="" loading="lazy" width="124" height="124">')}
-      ${petTile('Gatos', 'Dueños de la casa', '<img src="assets/cat.jpg" alt="" loading="lazy" width="124" height="124">')}
+      ${petTile('Perros', 'Lealtad con cuatro patas', '<img src="assets/hero-dog-sm.webp" alt="" loading="lazy" width="124" height="124">')}
+      ${petTile('Gatos', 'Dueños de la casa', '<img src="assets/cat-sm.webp" alt="" loading="lazy" width="124" height="124">')}
       ${petTile('Aves', 'Alegría que vuela', icon('bird'))}
       ${petTile('Peces', 'Un mundo bajo el agua', icon('fish'))}
       ${petTile('Pequeños', 'Pequeños, pero enormes', icon('rabbit'))}
@@ -81,6 +88,7 @@ export function home() {
     </div></section>
   <section class="wrap section" aria-labelledby="h-fav"><div class="section-head"><div><div class="eyebrow">Pequeños favoritos</div><h2 id="h-fav">Para llenar su día de alegría</h2><p>Una selección pensada para comer, jugar y estar bien.</p></div><a href="#catalogo" class="text-link">Ver catálogo <span>↗</span></a></div>
     <div class="products-grid">${featured.map(productCard).join('')}</div></section>
+  ${offersStrip()}
   ${howItWorks()}
   ${storesStrip()}
   ${testimonials()}
@@ -92,6 +100,7 @@ export function home() {
 
 // ---------- Catálogo ----------
 export function filterProducts(params, favoritesOnly = false) {
+  const offer = params.get('offer') === '1';
   const pet = params.get('pet') || '', category = params.get('category') || '', vendor = params.get('vendor') || '';
   const q = normal(params.get('q') || '').trim(), sort = params.get('sort') || 'featured', range = params.get('price') || '';
   const [lo, hi] = range ? range.split('-').map(v => (v === '' ? null : Number(v))) : [null, null];
@@ -100,6 +109,7 @@ export function filterProducts(params, favoritesOnly = false) {
     if (pet && p.pet !== pet) return false;
     if (category && p.category !== category) return false;
     if (vendor && p.vendor !== vendor) return false;
+    if (offer && !(p.old > p.price)) return false;
     if (lo !== null && p.price < lo) return false;
     if (hi !== null && hi !== undefined && p.price > hi) return false;
     if (favoritesOnly && !state.favorites.includes(p.id)) return false;
@@ -118,10 +128,13 @@ export function filterProducts(params, favoritesOnly = false) {
 const radioGroup = (title, name, options, current) => `<fieldset class="filter-group"><legend>${title}</legend>${options.map(([v, t]) =>
   `<label><input type="radio" name="${name}" value="${esc(v)}" ${v === current ? 'checked' : ''}> ${esc(t)}</label>`).join('')}</fieldset>`;
 
+export const PAGE_SIZE = 12;
 export function resultsHtml(list, params, favoritesOnly) {
   const q = params.get('q') || '';
+  const shown = Math.max(PAGE_SIZE, Number(params.get('n')) || PAGE_SIZE);
+  const more = list.length > shown;
   const grid = list.length
-    ? list.map(productCard).join('')
+    ? list.slice(0, shown).map(productCard).join('') + (more ? `<div class="load-more"><span>Mostrando ${shown} de ${list.length}</span><button class="button secondary" data-action="more" data-n="${shown + PAGE_SIZE}">Ver más productos</button></div>` : '')
     : `<div class="empty">${icon(favoritesOnly ? 'heart' : 'search')}<h2>${favoritesOnly ? 'Aquí van sus próximos favoritos' : 'No encontramos coincidencias'}</h2>
        <p>${favoritesOnly ? 'Guarda los productos que te gustan tocando el corazón.' : 'Prueba con otra búsqueda o quita algún filtro. Si no aparece lo que buscas, podemos ayudarte a encontrarlo.'}</p>
        <div class="button-row center"><a href="#catalogo" class="button">Ver todo el catálogo</a>${favoritesOnly ? '' : `<a class="button secondary" href="${waLink(`Hola, estoy buscando${q ? `: ${q}` : ' un producto'} y no lo encontré en Animal World.`)}" target="_blank" rel="noopener">Preguntar por WhatsApp ${icon('chat')}</a>`}</div>
@@ -138,8 +151,9 @@ export function catalog(params, favoritesOnly = false) {
   const vendors = state.catalog.vendors;
   const {count, grid} = resultsHtml(list, params, favoritesOnly);
   const active = ['pet', 'category', 'vendor', 'price'].some(k => params.get(k));
-  return page(favoritesOnly ? 'Tus favoritos' : 'Un mundo para tu mascota',
-    favoritesOnly ? 'Esas pequeñas cosas que sabes que le van a encantar.' : 'Alimento, juguetes y cuidados de tiendas locales. Encuentra su próximo favorito.',
+  const offers = params.get('offer') === '1';
+  return page(favoritesOnly ? 'Tus favoritos' : offers ? 'Ofertas para consentirlos' : 'Un mundo para tu mascota',
+    favoritesOnly ? 'Esas pequeñas cosas que sabes que le van a encantar.' : offers ? 'Productos con precio rebajado de tiendas locales. Mientras duren las existencias.' : 'Alimento, juguetes y cuidados de tiendas locales. Encuentra su próximo favorito.',
     `<div class="catalog-layout">
       <aside class="filters" id="catalog-filters" aria-label="Filtros de productos">
         ${radioGroup('Tu mascota', 'pet', [['', 'Todas'], ...CONFIG.pets.map(v => [v, v === 'Pequeños' ? 'Pequeños amigos' : v])], params.get('pet') || '')}
@@ -154,7 +168,7 @@ export function catalog(params, favoritesOnly = false) {
             `<option value="${v}" ${sort === v ? 'selected' : ''}>${t}</option>`).join('')}</select></label></div>
         <div class="products-grid" id="results">${grid}</div>
       </div>
-    </div>`, favoritesOnly ? 'Favoritos' : 'Catálogo');
+    </div>`, favoritesOnly ? 'Favoritos' : offers ? 'Ofertas' : 'Catálogo');
 }
 
 // ---------- Ficha de producto ----------
@@ -172,7 +186,7 @@ export function productPage(params) {
   const rel = related(p);
   return page(esc(p.name), '', `<div class="product-detail">
       <div class="gallery">
-        <div class="gallery-main"><img id="gallery-main" src="${esc(p.images[0])}" alt="${esc(p.name)}" width="600" height="560" fetchpriority="high"></div>
+        <div class="gallery-main"><img id="gallery-main" src="${esc(p.images[0])}" alt="${esc(p.name)}" width="600" height="560" fetchpriority="high"><button class="zoom-button" data-action="zoom" aria-label="Ampliar imagen">${icon('zoom')}</button></div>
         ${p.images.length > 1 ? `<div class="gallery-thumbs" role="group" aria-label="Más imágenes">${p.images.map((src, i) =>
           `<button class="thumb ${i === 0 ? 'active' : ''}" data-action="gallery" data-src="${esc(src)}" aria-label="Ver imagen ${i + 1} de ${p.images.length}" aria-pressed="${i === 0}"><img src="${esc(src)}" alt="" loading="lazy" width="72" height="72"></button>`).join('')}</div>` : ''}
       </div>
@@ -188,7 +202,9 @@ export function productPage(params) {
           <button class="button" data-action="add" data-id="${esc(p.id)}" ${p.stock <= 0 ? 'disabled' : ''}>Añadir al carrito ${icon('bag')}</button>
           <button class="button secondary" data-action="favorite" data-id="${esc(p.id)}" aria-pressed="${fav}">${fav ? 'Quitar de favoritos' : 'Guardar favorito'} ${icon('heart')}</button>
         </div>
+        <p class="delivery-line">${icon('truck')}<span>Entrega en <b>${esc(state.location)}</b>: ${money(CONFIG.shipping)} · o retiro sin costo. <button class="link-button inline" data-action="location">Cambiar zona</button></span></p>
         <details class="detail-more" open><summary>Descripción</summary><p>${esc(p.description || p.short || '')}</p></details>
+        <details class="detail-more"><summary>Datos del producto</summary><table class="specs"><tbody>${[['Marca', p.brand], ['Presentación', p.unit], ['Mascota', p.pet === 'Pequeños' ? 'Pequeños amigos' : p.pet], ['Categoría', p.category], ['Tienda', vendor?.name]].filter(r => r[1]).map(([k, v]) => `<tr><th scope="row">${k}</th><td>${esc(v)}</td></tr>`).join('')}</tbody></table></details>
         <details class="detail-more"><summary>Entrega y retiro</summary><p>Elige entrega local (${money(CONFIG.shipping)}) o retiro coordinado al hacer tu pedido. La tienda confirma disponibilidad y coordina la entrega contigo por WhatsApp.</p></details>
         <button class="link-button" data-action="ask-product" data-id="${esc(p.id)}">${icon('chat')} Preguntar por este producto</button>
       </div>
