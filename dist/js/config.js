@@ -7,6 +7,9 @@ export const CONFIG = {
   email: '',
   instagram: '',
   shipping: 3,
+  // Bolívares por dólar, solo como referencia en pantalla (0 = no mostrar). Valor de EJEMPLO: poner la tasa del día antes de publicar.
+  rate: 100,
+  rateNote: 'Referencial · tasa de ejemplo',
   cities: ['Maracay', 'Turmero', 'Cagua', 'La Victoria'],
   payments: ['Pago Móvil', 'Binance', 'Tarjeta (a coordinar)'],
   pets: ['Perros', 'Gatos', 'Aves', 'Peces', 'Pequeños', 'Reptiles'],

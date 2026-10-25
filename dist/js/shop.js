@@ -1,7 +1,7 @@
 // Vistas de la tienda: inicio, catálogo y ficha de producto.
-import {CONFIG} from './config.js';
+import {CONFIG, waLink} from './config.js';
 import {state, products, productById, vendorById} from './store.js';
-import {icon, esc, money, normal, page} from './ui.js';
+import {icon, esc, money, bs, normal, fuzzyHas, page} from './ui.js';
 import {howItWorks, testimonials, faqPreview, storesStrip} from './content.js';
 
 export function productCard(p) {
@@ -14,6 +14,7 @@ export function productCard(p) {
     </a>
     <button class="favorite ${fav ? 'active' : ''}" data-action="favorite" data-id="${esc(p.id)}" aria-pressed="${fav}"
       aria-label="${fav ? 'Quitar de' : 'Añadir a'} favoritos: ${esc(p.name)}">${icon('heart')}</button>
+    <button class="quick-button" data-action="quick" data-id="${esc(p.id)}" aria-label="Vista rápida: ${esc(p.name)}">Vista rápida</button>
     <div class="product-info">
       <div class="product-brand">${esc(p.vendorName || vendorById(p.vendor)?.name || '')}</div>
       <h3><a href="#producto?id=${esc(p.id)}">${esc(p.name)}</a></h3>
@@ -104,7 +105,7 @@ export function filterProducts(params, favoritesOnly = false) {
     if (favoritesOnly && !state.favorites.includes(p.id)) return false;
     if (words.length) {
       const hay = normal(`${p.name} ${p.brand} ${p.category} ${p.pet} ${p.vendorName || ''} ${p.short || ''}`);
-      return words.every(w => hay.includes(w));
+      return words.every(w => fuzzyHas(hay, w));
     }
     return true;
   });
@@ -122,7 +123,9 @@ export function resultsHtml(list, params, favoritesOnly) {
   const grid = list.length
     ? list.map(productCard).join('')
     : `<div class="empty">${icon(favoritesOnly ? 'heart' : 'search')}<h2>${favoritesOnly ? 'Aquí van sus próximos favoritos' : 'No encontramos coincidencias'}</h2>
-       <p>${favoritesOnly ? 'Guarda los productos que te gustan tocando el corazón.' : 'Prueba con otra búsqueda o quita algún filtro.'}</p><a href="#${favoritesOnly ? 'catalogo' : 'catalogo'}" class="button">Ver todo el catálogo</a></div>`;
+       <p>${favoritesOnly ? 'Guarda los productos que te gustan tocando el corazón.' : 'Prueba con otra búsqueda o quita algún filtro. Si no aparece lo que buscas, podemos ayudarte a encontrarlo.'}</p>
+       <div class="button-row center"><a href="#catalogo" class="button">Ver todo el catálogo</a>${favoritesOnly ? '' : `<a class="button secondary" href="${waLink(`Hola, estoy buscando${q ? `: ${q}` : ' un producto'} y no lo encontré en Animal World.`)}" target="_blank" rel="noopener">Preguntar por WhatsApp ${icon('chat')}</a>`}</div>
+       <div class="empty-suggest"><h3>Quizás te guste</h3><div class="products-grid">${products().slice(0, 4).map(productCard).join('')}</div></div></div>`;
   return {
     count: `${list.length} producto${list.length === 1 ? '' : 's'}${q ? ` para «${esc(q)}»` : ''}`,
     grid
@@ -176,8 +179,9 @@ export function productPage(params) {
       <div class="detail-info">
         <div class="eyebrow">${esc(p.brand)}</div>
         <h2>${esc(p.name)}</h2>
-        <p class="detail-unit">${esc(p.unit)}${vendor ? ` · Vende <a href="#catalogo?vendor=${esc(vendor.id)}">${esc(vendor.name)}</a>${vendor.city ? ` (${esc(vendor.city)})` : ''}` : ''}</p>
+        <p class="detail-unit">${esc(p.unit)}${vendor ? ` · Vende <a href="#tienda?id=${esc(vendor.id)}">${esc(vendor.name)}</a>${vendor.city ? ` (${esc(vendor.city)})` : ''}` : ''}</p>
         <div class="detail-price"><span class="price">${money(p.price)}</span>${p.old ? `<span class="old-price">${money(p.old)}</span>` : ''}</div>
+        ${bs(p.price) ? `<p class="bs-line">${bs(p.price)} <small>${esc(CONFIG.rateNote)}</small></p>` : ''}
         <p class="stock-message ${p.stock <= 0 ? 'out' : ''}">${stockText}</p>
         <p class="detail-short">${esc(p.short || '')}</p>
         <div class="button-row">

@@ -5,7 +5,8 @@ import {state, save, productById, cartCount, reconcileCart} from './store.js';
 import {hydrate, icon, money, debounce, toast, showModal, closeModal, isModalOpen, success} from './ui.js';
 import {home, catalog, productPage} from './shop.js';
 import {servicePage, howPage, affiliatePage, contactPage, infoPage, services} from './content.js';
-import {addToCart, changeQuantity, removeFromCart, showCart, showCheckout, updateDeliveryFields, submitOrder} from './checkout.js';
+import {addToCart, changeQuantity, removeFromCart, undoRemove, showCart, showCheckout, updateDeliveryFields, submitOrder} from './checkout.js';
+import {quickView, storePage, catalogAfter, productAfter, clearSticky} from './extras.js';
 import * as acc from './account.js';
 import {refreshMotion} from './motion.js';
 
@@ -24,6 +25,7 @@ const SEO = {
   nosotros: ['Nuestra historia', 'Animal World reúne productos y servicios de comercios locales de Aragua en un solo lugar.'],
   envios: ['Envíos y retiros', 'Entrega local y retiro coordinado en el centro de Aragua.'],
   devoluciones: ['Cambios y devoluciones', 'Qué hacer si un producto llega dañado, defectuoso o distinto al pedido.'],
+  tienda: ['Tienda aliada', 'Productos de una tienda aliada de Animal World en Aragua.'],
   contacto: ['Contacto', 'Escríbenos para consultas, pedidos o para afiliar tu negocio.'],
   cuenta: ['Mi cuenta', 'Tus pedidos y datos en Animal World.'],
   panel: ['Mi tienda', 'Panel de tienda aliada de Animal World.'],
@@ -36,6 +38,10 @@ function setMeta(path, params) {
   if (path === 'producto') {
     const p = productById(params.get('id'));
     if (p) { title = p.name; desc = `${p.short || p.name} ${p.unit}. Cómpralo en Animal World y recíbelo en Aragua.`; }
+  }
+  if (path === 'tienda') {
+    const v = state.catalog.vendors.find(v => v.id === params.get('id'));
+    if (v) { title = v.name; desc = `${v.about || 'Tienda aliada'} Productos de ${v.name} (${v.city || 'Aragua'}) en Animal World.`; }
   }
   document.title = path === 'inicio' ? title : `${title} · Animal World`;
   const set = (sel, val) => document.querySelector(sel)?.setAttribute('content', val);
@@ -52,11 +58,12 @@ const route = () => {
 };
 const views = {
   inicio: [home],
-  catalogo: [(p) => catalog(p)],
-  favoritos: [(p) => catalog(p, true)],
+  catalogo: [(p) => catalog(p), catalogAfter],
+  favoritos: [(p) => catalog(p, true), catalogAfter],
+  tienda: [storePage],
   servicios: [servicePage],
   'como-funciona': [howPage],
-  producto: [productPage],
+  producto: [productPage, productAfter],
   afiliate: [affiliatePage],
   contacto: [contactPage],
   cuenta: [acc.accountPage, acc.accountLoad],
@@ -81,7 +88,8 @@ function render() {
     if (lastPath !== null) { window.scrollTo({top: 0, behavior: 'instant'}); main.focus({preventScroll: true}); }
     lastPath = path;
   }
-  after?.();
+  clearSticky();
+  after?.(params);
   wireFilterToggle();
   refreshMotion(path);
 }
@@ -160,6 +168,8 @@ const actions = {
   },
   quantity: (b) => changeQuantity(b.dataset.id, Number(b.dataset.delta)),
   remove: (b) => removeFromCart(b.dataset.id),
+  'undo-remove': undoRemove,
+  quick: (b) => quickView(b.dataset.id),
   checkout: showCheckout,
   shop() { closeModal(); location.hash = 'catalogo'; },
   book(b) { const s = services.find(s => s.id === b.dataset.id); if (s) acc.bookingForm(s); },
